@@ -3,9 +3,6 @@ package com.sunilos.proj0.form;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.sunilos.proj0.dto.BaseDTO;
@@ -14,13 +11,10 @@ import com.sunilos.proj0.dto.CourseDTO;
 public class CourseForm extends BaseForm {
 
 	@NotEmpty
-	@Pattern(regexp = "[a-zA-Z]*$", message = "{Pattern.form.courseName}")
 	private String courseName;
 
 	@NotEmpty
-	private String description;
-
-	private Long[] ids;
+	private String subjectName;
 
 	public String getCourseName() {
 		return courseName;
@@ -30,20 +24,12 @@ public class CourseForm extends BaseForm {
 		this.courseName = courseName;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getSubjectName() {
+		return subjectName;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Long[] getIds() {
-		return ids;
-	}
-
-	public void setIds(Long[] ids) {
-		this.ids = ids;
+	public void setSubjectName(String subjectName) {
+		this.subjectName = subjectName;
 	}
 
 	@Override
@@ -51,9 +37,9 @@ public class CourseForm extends BaseForm {
 		CourseDTO dto = new CourseDTO();
 		dto.setId(id);
 		dto.setCourseName(courseName);
-		dto.setDescription(description);
+		dto.setSubject(subjectName);
 		dto.setCreatedBy(createdBy);
-		// dto.setModifiedBy(modifiedBy);
+		dto.setModifiedBy(modifiedBy);
 		dto.setCreatedDatetime(new Timestamp(new Date().getTime()));
 		dto.setModifiedDatetime(new Timestamp(new Date().getTime()));
 		return dto;
@@ -65,7 +51,7 @@ public class CourseForm extends BaseForm {
 
 		id = dto.getId();
 		courseName = dto.getCourseName();
-		description = dto.getDescription();
+		subjectName = dto.getSubject();
 		createdBy = dto.getCreatedBy();
 		modifiedBy = dto.getModifiedBy();
 		if (dto.getCreatedDatetime() != null) {

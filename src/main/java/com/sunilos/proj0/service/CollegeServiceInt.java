@@ -7,40 +7,37 @@ import com.sunilos.proj0.exception.ApplicationException;
 import com.sunilos.proj0.exception.DatabaseException;
 import com.sunilos.proj0.exception.DuplicateRecordException;
 
-/**
- * College Service interface.
- * 
- * @author Business Delegate
- * @version 1.0
- * @Copyright (c) SunilOS
- */
-
 public interface CollegeServiceInt {
 
 	/**
 	 * Add a College
 	 * 
 	 * @param dto
+	 * @throws ApplicationException
 	 * @throws DuplicateRecordException
 	 *             : throws when college already exists
 	 */
-	public long add(CollegeDTO dto) throws DuplicateRecordException;
+	public long add(CollegeDTO dto) throws ApplicationException,
+			DuplicateRecordException;
 
 	/**
 	 * Update a College
 	 * 
 	 * @param dto
+	 * @throws ApplicationException
 	 * @throws DuplicateRecordException
 	 *             : if updated user record is already exist
 	 */
-	public void update(CollegeDTO dto) throws DuplicateRecordException;
+	public void update(CollegeDTO dto) throws ApplicationException,
+			DuplicateRecordException;
 
 	/**
 	 * Delete a College
 	 * 
 	 * @param dto
+	 * @throws ApplicationException
 	 */
-	public void delete(long id);
+	public void delete(long id) throws ApplicationException;
 
 	/**
 	 * Find College by Name
@@ -48,8 +45,9 @@ public interface CollegeServiceInt {
 	 * @param name
 	 *            : get parameter
 	 * @return dto
+	 * @throws ApplicationException
 	 */
-	public CollegeDTO findByName(String name);
+	public CollegeDTO findByName(String name) throws ApplicationException;
 
 	/**
 	 * Find College by PK
@@ -57,8 +55,9 @@ public interface CollegeServiceInt {
 	 * @param pk
 	 *            : get parameter
 	 * @return dto
+	 * @throws ApplicationException
 	 */
-	public CollegeDTO findByPK(long pk);
+	public CollegeDTO findByPK(long pk) throws ApplicationException;
 
 	/**
 	 * Search College with pagination
@@ -70,8 +69,10 @@ public interface CollegeServiceInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
+	 * @throws ApplicationException
 	 */
-	public List search(CollegeDTO dto, int pageNo, int pageSize);
+	public List search(CollegeDTO dto, int pageNo, int pageSize)
+			throws ApplicationException;
 
 	/**
 	 * Search College
@@ -79,15 +80,17 @@ public interface CollegeServiceInt {
 	 * @return list : List of College
 	 * @param dto
 	 *            : Search Parameters
+	 * @throws ApplicationException
 	 */
-	public List search(CollegeDTO dto);
+	public List search(CollegeDTO dto) throws ApplicationException;
 
 	/**
 	 * Gets List of College
 	 * 
 	 * @return list : List of College
+	 * @throws DatabaseException
 	 */
-	public List list();
+	public List list() throws ApplicationException;
 
 	/**
 	 * get List of College with pagination
@@ -97,7 +100,8 @@ public interface CollegeServiceInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
+	 * @throws ApplicationException
 	 */
-	public List list(int pageNo, int pageSize);
+	public List list(int pageNo, int pageSize) throws ApplicationException;
 
 }

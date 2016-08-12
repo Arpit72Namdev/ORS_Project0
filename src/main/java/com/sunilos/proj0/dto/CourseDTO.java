@@ -4,14 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-/**
- * Course POJO class. It is persistent object.
- * 
- * @author Business Delegate
- * @version 1.0
- * @Copyright (c) SunilOS
- */
-
 @Entity
 @Table(name = "ST_COURSE")
 public class CourseDTO extends BaseDTO {
@@ -23,14 +15,14 @@ public class CourseDTO extends BaseDTO {
 	/**
 	 * Course Name
 	 */
-	@Column(name = "COURSE_NAME", length = 70)
+	@Column(name = "COURSE_NAME", length = 50)
 	private String courseName;
 
-		/**
-	 * Course Description
+	/**
+	 * Course Subject
 	 */
-	@Column(name = "DESCRIPTION", length = 255)
-	private String description;
+	@Column(name = "SUBJECT", length = 50)
+	private String subject;
 
 	/**
 	 * accessor
@@ -44,24 +36,24 @@ public class CourseDTO extends BaseDTO {
 		this.courseName = courseName;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getSubject() {
+		return subject;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setSubject(String subject) {
+		this.subject = subject;
 	}
 
 	@Override
 	public String getKey() {
 
-		return String.valueOf(id);
+		return id + "";
 	}
 
 	@Override
 	public String getValue() {
 
-		return courseName;
+		return courseName + " " + subject;
 	}
 
 }

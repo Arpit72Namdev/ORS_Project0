@@ -17,9 +17,9 @@ import org.springframework.dao.DataAccessException;
 import com.sunilos.proj0.exception.DuplicateRecordException;
 
 /**
- * Hibernate implementation of Marksheet DAO.
+ * Hibernate implementation of College DAO.
  * 
- * @author Business Delegate
+ * @author SunilOS
  * @version 1.0
  * @Copyright (c) SunilOS
  * 
@@ -82,7 +82,8 @@ public class MarksheetDAOHibImpl implements MarksheetDAOInt {
 		return dto;
 	}
 
-	public void update(MarksheetDTO dto) throws DataAccessException {
+	public void update(MarksheetDTO dto) throws DataAccessException,
+			DuplicateRecordException {
 		log.debug("Marksheet Dao update started");
 
 		/*
@@ -163,9 +164,9 @@ public class MarksheetDAOHibImpl implements MarksheetDAOInt {
 	public List getMeritList(int pageNo, int pageSize)
 			throws DataAccessException {
 		log.debug("Marksheet Dao getMeritList Started");
-		String sql = " from MarksheetDTO order by (physics + chemistry + maths) desc";
+		String hql = "from MarksheetDTO order by (physics + chemistry + maths) desc";
 		Session session = sessionFactory.getCurrentSession();
-		Query q = session.createQuery(sql);
+		Query q = session.createQuery(hql);
 
 		log.debug("Marksheet Dao getMeritList End");
 		return q.list();

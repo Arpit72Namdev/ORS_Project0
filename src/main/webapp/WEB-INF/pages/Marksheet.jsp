@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html;charset=UTF-8 "
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="sf"%>
@@ -16,16 +16,8 @@
 		<%-- <sf:hidden path="modifiedBy"></sf:hidden> --%>
 		<sf:hidden path="createdDatetime"></sf:hidden>
 		<sf:hidden path="modifiedDatetime"></sf:hidden>
-		<h1 class="col-sm-offset-1">
-			<c:choose>
-				<c:when test="${form.id>0}">
-					<span class="label label-primary">Edit Marksheet</span>
-				</c:when>
-				<c:otherwise>
-					<span class="label label-primary"><s:message
-							code="label.addMarksheet" /></span>
-				</c:otherwise>
-			</c:choose>
+		<h1 class="col-sm-offset-2">
+			<span class="label label-success">Add Marksheet</span>
 		</h1>
 		<br>
 		<c:choose>
@@ -38,9 +30,7 @@
 			</c:when>
 			<c:otherwise>
 				<div style="width: 50%; height: 10%;" class="alert alert-danger">
-					<h5 align="center">
-						<strong>${error }</strong>
-					</h5>
+					<strong>Error !..</strong> ${error }
 				</div>
 
 			</c:otherwise>
@@ -56,9 +46,7 @@
 			</c:when>
 			<c:otherwise>
 				<div style="width: 50%; height: 10%;" class="alert alert-success">
-					<h5 align="center">
-						<strong>${success }</strong>
-					</h5>
+					<strong>Data Saved !..</strong> ${success }
 				</div>
 
 			</c:otherwise>
@@ -66,58 +54,60 @@
 		</c:choose>
 
 		<div class="form-group">
-			<label class="col-sm-1"> <s:message code="label.student" />*
+			<label class="col-sm-2"> <s:message code="label.student" />*
 			</label>
 			<div class="col-sm-4">
-				<sf:select STYLE="width: 320px" size="0" class="form-control"
+				<sf:select STYLE="width: 150px" size="0" class="form-control"
 					path="studentId">
-					<sf:option value="" label="Select" />
+					<sf:option value="0" label="Select" />
 					<sf:options items="${studentList }" itemLabel="value"
 						itemValue="id" />
+
 				</sf:select>
+				&nbsp;
+				<sf:errors path="studentId" cssClass="error" />
 			</div>
-			<sf:errors path="studentId" cssClass="error" />
 		</div>
 
 		<div class="form-group">
-			<label class="col-sm-1"><s:message code="label.rollNo" />*</label>
+			<label class="col-sm-2"><s:message code="label.rollNo" />*</label>
 			<div class="col-sm-4">
 				<sf:input class="form-control" path="rollNo" />
+				&nbsp;
+				<sf:errors path="rollNo" cssClass="error" />
 			</div>
-			<sf:errors path="rollNo" cssClass="error" />
 		</div>
 		<div class="form-group">
-			<label class="col-sm-1"><s:message code="label.chemistry" />*</label>
+			<label class="col-sm-2"><s:message code="label.chemistry" />*</label>
 			<div class="col-sm-4">
 				<sf:input class="form-control" path="chemistry" />
+				&nbsp;
+				<sf:errors path="chemistry" cssClass="error" />
 			</div>
-			<sf:errors path="chemistry" cssClass="error" />
 		</div>
 		<div class="form-group">
-			<label class="col-sm-1"><s:message code="label.physics" />*</label>
+			<label class="col-sm-2"><s:message code="label.physics" />*</label>
 			<div class="col-sm-4">
 				<sf:input class="form-control" path="physics" />
+				&nbsp;
+				<sf:errors path="physics" cssClass="error" />
 			</div>
-			<sf:errors path="physics" cssClass="error" />
 		</div>
 		<div class="form-group">
-			<label class="col-sm-1"><s:message code="label.maths" />*</label>
+			<label class="col-sm-2"><s:message code="label.maths" />*</label>
 			<div class="col-sm-4">
 				<sf:input class="form-control" path="maths" />
+				&nbsp;
+				<sf:errors path="maths" cssClass="error" />
 			</div>
-			<sf:errors path="maths" cssClass="error" />
 		</div>
 
-		<div class="col-sm-offset-1">
-			&ensp;
+		<div class="col-sm-offset-3">
 			<button type="submit" name="operation" value="Save"
-				class="btn btn-primary">
-				<s:message code="label.save" />
-			</button>
+				class="btn btn-info">Submit</button>
+			&nbsp;&nbsp;
 			<button type="submit" name="operation" value="Cancel"
-				class="btn btn-primary">
-				<s:message code="label.cancel" />
-			</button>
+				class="btn btn-danger">Cancel</button>
 
 		</div>
 

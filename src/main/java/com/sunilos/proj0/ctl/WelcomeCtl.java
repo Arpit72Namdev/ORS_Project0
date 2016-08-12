@@ -6,15 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-/**
- * Contains navigation logics for   Welcome  page.
- * 
- * @author Business Delegate
- * @version 1.0
- * @Copyright (c) SunilOS
- */
-
-
 @Controller
 @RequestMapping(value = "/Welcome")
 public class WelcomeCtl {

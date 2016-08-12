@@ -1,14 +1,10 @@
 package com.sunilos.proj0.form;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.sunilos.proj0.dto.BaseDTO;
 import com.sunilos.proj0.dto.StudentDTO;
@@ -17,19 +13,18 @@ import com.sunilos.proj0.util.Util;
 public class StudentForm extends BaseForm {
 
 	@NotEmpty
-	@Pattern(regexp = "[a-zA-Z]*$", message = "{Pattern.form.firstName}")
+	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "First name cannot contain space")
 	private String firstName;
 
 	@NotEmpty
-	@Pattern(regexp = "[a-zA-z]*$", message = "{Pattern.form.lastName}")
+	@Pattern(regexp = "[a-zA-Z]*")
 	private String lastName;
 
-	@NotNull
-	@DateTimeFormat(pattern = "MM/dd/yyyy")
-	private Date dob;
+	@NotEmpty
+	private String dob;
 
 	@NotEmpty
-	@Pattern(regexp = "([7-9]{1}[0-9]{9})*$", message = "{Pattern.form.mobileNo}")
+	@Pattern(regexp = "^[7-9][0-9]{9}$", message = "{Pattern.form.phoneNo}")
 	private String mobileNo;
 
 	@NotEmpty
@@ -37,45 +32,31 @@ public class StudentForm extends BaseForm {
 	private String emailId;
 
 	@NotNull
-	private Long collegeId;
-	private String collegeName;
-	private Long[] Ids;
+	private long collegeId;
 
-	/**
-	 * @return the collegeId
-	 */
-	public Long getCollegeId() {
-		return collegeId;
-	}
+	private long[] Ids;
 
-	/**
-	 * @param collegeId
-	 *            the collegeId to set
-	 */
-	public void setCollegeId(Long collegeId) {
-		this.collegeId = collegeId;
-	}
-
-	/**
-	 * @return the ids
-	 */
-	public Long[] getIds() {
+	public long[] getIds() {
 		return Ids;
 	}
 
-	/**
-	 * @param ids
-	 *            the ids to set
-	 */
-	public void setIds(Long[] ids) {
+	public void setIds(long[] ids) {
 		Ids = ids;
+	}
+
+	public long getCollegeId() {
+		return collegeId;
+	}
+
+	public void setCollegeId(long collegeId) {
+		this.collegeId = collegeId;
 	}
 
 	public String getFirstName() {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public void setFirstNAme(String firstName) {
 		this.firstName = firstName;
 	}
 
@@ -87,13 +68,11 @@ public class StudentForm extends BaseForm {
 		this.lastName = lastName;
 	}
 
-	
-
-	public Date getDob() {
+	public String getDob() {
 		return dob;
 	}
 
-	public void setDob(Date dob) {
+	public void setDob(String dob) {
 		this.dob = dob;
 	}
 
@@ -113,36 +92,16 @@ public class StudentForm extends BaseForm {
 		this.emailId = emailId;
 	}
 
-	/**
-	 * @return the collegeName
-	 */
-	public String getCollegeName() {
-		return collegeName;
-	}
-
-	/**
-	 * @param collegeName
-	 *            the collegeName to set
-	 */
-	public void setCollegeName(String collegeName) {
-		this.collegeName = collegeName;
-	}
-
 	@Override
 	public BaseDTO getDto() {
 		StudentDTO dto = new StudentDTO();
 		dto.setId(id);
 		dto.setFirstName(firstName);
 		dto.setLastName(lastName);
-		dto.setDob(dob);
+		dto.setDob(Util.getDate(dob));
 		dto.setMobileNo(mobileNo);
 		dto.setEmail(emailId);
 		dto.setCollegeId(collegeId);
-		dto.setCollegeName(collegeName);
-		dto.setCreatedBy(createdBy);
-		/* dto.setModifiedBy(modifiedBy); */
-		dto.setCreatedDatetime(new Timestamp(new Date().getTime()));
-		dto.setModifiedDatetime(new Timestamp(new Date().getTime()));
 		return dto;
 	}
 
@@ -152,14 +111,9 @@ public class StudentForm extends BaseForm {
 		id = dto.getId();
 		firstName = dto.getFirstName();
 		lastName = dto.getLastName();
-		dob = dto.getDob();
+		dob = Util.getDate(dto.getDob());
 		mobileNo = dto.getMobileNo();
 		emailId = dto.getEmail();
 		collegeId = dto.getCollegeId();
-		collegeName = dto.getCollegeName();
-		createdBy = dto.getCreatedBy();
-		/* modifiedBy = dto.getModifiedBy(); */
-		createdDatetime = dto.getCreatedDatetime().getTime();
-		modifiedDatetime = dto.getModifiedDatetime().getTime();
 	}
 }

@@ -5,15 +5,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-
-/**
- * Contains navigation logics for ContactUs .
- * 
- * @author Business Delegate
- * @version 1.0
- * @Copyright (c) SunilOS
- */
-
 @Controller
 @RequestMapping(value = "/ContactUs")
 public class ContactUsCtl {

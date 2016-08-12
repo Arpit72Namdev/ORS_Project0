@@ -10,14 +10,14 @@ import javax.persistence.Table;
 /**
  * User POJO class. It is persistent object.
  * 
- * @author Business Delegate
+ * @author SunilOS
  * @version 1.0
  * @Copyright (c) SunilOS
  */
 
 @Entity
 @Table(name = "ST_USER")
-public class UserDTO extends BaseDTO {
+public class UserDTO extends BaseDTO implements DropdownList {
 
 	/**
 	 * Lock Active constant for User
@@ -49,7 +49,6 @@ public class UserDTO extends BaseDTO {
 	 */
 	@Column(name = "PASSWORD", length = 50)
 	private String password;
-
 	/**
 	 * Date of Birth of User
 	 */
@@ -64,7 +63,7 @@ public class UserDTO extends BaseDTO {
 	 * Role of User
 	 */
 	@Column(name = "ROLE_ID")
-	private Long roleId;
+	private long roleId;
 
 	/**
 	 * Number of unsuccessful login attempt
@@ -149,11 +148,11 @@ public class UserDTO extends BaseDTO {
 		this.mobileNo = mobileNo;
 	}
 
-	public Long getRoleId() {
+	public long getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(Long roleId) {
+	public void setRoleId(long roleId) {
 		this.roleId = roleId;
 	}
 
@@ -205,16 +204,12 @@ public class UserDTO extends BaseDTO {
 		this.lastLoginIP = lastLoginIP;
 	}
 
-	@Override
-	public String getKey() {
-		// TODO Auto-generated method stub
-		return String.valueOf(id);
+	public static String getActive() {
+		return ACTIVE;
 	}
 
-	@Override
-	public String getValue() {
-		// TODO Auto-generated method stub
-		return firstName + " " + lastName + "-" + login;
+	public static String getInactive() {
+		return INACTIVE;
 	}
 
 }

@@ -14,20 +14,6 @@ import com.sunilos.proj0.dto.FacultyDTO;
 import com.sunilos.proj0.exception.ApplicationException;
 import com.sunilos.proj0.exception.DuplicateRecordException;
 
-/**
- * Session facade of Faculty Service. It is transactional, apply delcarative
- * transactions with help of Spring AOP.
- * 
- * If unchecked exception is propagated from a method then transaction will be
- * rolled back.
- * 
- * Default propagation value is Propagation.REQUIRED and readOnly = false
- * 
- * @author Business Delegate
- * @version 1.0
- * @Copyright (c) SunilOS
- */
-
 @Service(value = "facultyService")
 public class FacultyServiceSpringImpl implements FacultyServiceInt {
 
@@ -42,7 +28,8 @@ public class FacultyServiceSpringImpl implements FacultyServiceInt {
 			.getLogger(FacultyServiceSpringImpl.class);
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public long add(FacultyDTO dto) throws DuplicateRecordException {
+	public long add(FacultyDTO dto) throws ApplicationException,
+			DataAccessException, DuplicateRecordException {
 
 		FacultyDTO duplicataFaculty = dao.findByUserId(dto.getUserId());
 
@@ -55,48 +42,50 @@ public class FacultyServiceSpringImpl implements FacultyServiceInt {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void update(FacultyDTO dto) throws DuplicateRecordException {
+	public void update(FacultyDTO dto) throws ApplicationException,
+			DuplicateRecordException {
 		dao.update(dto);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void delete(long id) {
+	public void delete(long id) throws ApplicationException {
 		dao.delete(id);
 
 	}
 
 	@Transactional(readOnly = true)
-	public FacultyDTO findByUserId(Long uId) {
+	public FacultyDTO findByUserId(Long uId) throws ApplicationException {
 
 		return dao.findByUserId(uId);
 	}
 
 	@Transactional(readOnly = true)
-	public FacultyDTO findByPK(long pk) {
+	public FacultyDTO findByPK(long pk) throws ApplicationException {
 
 		return dao.findByPK(pk);
 	}
 
 	@Transactional(readOnly = true)
-	public List search(FacultyDTO dto, int pageNo, int pageSize) {
+	public List search(FacultyDTO dto, int pageNo, int pageSize)
+			throws ApplicationException {
 
 		return dao.search(dto, pageNo, pageSize);
 	}
 
 	@Transactional(readOnly = true)
-	public List search(FacultyDTO dto) {
+	public List search(FacultyDTO dto) throws ApplicationException {
 
 		return dao.search(dto);
 	}
 
 	@Transactional(readOnly = true)
-	public List list() {
+	public List list() throws ApplicationException {
 
 		return dao.list();
 	}
 
 	@Transactional(readOnly = true)
-	public List list(int pageNo, int pageSize) {
+	public List list(int pageNo, int pageSize) throws ApplicationException {
 
 		return dao.list(pageNo, pageSize);
 	}

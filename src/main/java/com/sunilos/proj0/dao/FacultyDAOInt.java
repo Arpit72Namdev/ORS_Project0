@@ -2,14 +2,13 @@ package com.sunilos.proj0.dao;
 
 import java.util.List;
 
-import org.springframework.dao.DataAccessException;
-
 import com.sunilos.proj0.dto.FacultyDTO;
+import com.sunilos.proj0.exception.*;
 
 /**
  * Faculty DAO interface.
  * 
- * @author Business Delegate
+ * @author SunilOS
  * @version 1.0
  * @Copyright (c) SunilOS
  */
@@ -19,25 +18,29 @@ public interface FacultyDAOInt {
 	 * Add a Faculty
 	 * 
 	 * @param dto
-	 * @throws DataAccessException
+	 * @throws ApplicationException
+	 * @throws DuplicateRecordException
+	 *             : throws when Faculty already exists
 	 */
-	public long add(FacultyDTO dto) throws DataAccessException;
+	public long add(FacultyDTO dto);
 
 	/**
 	 * Update a Faculty
 	 * 
 	 * @param dto
-	 * @throws DataAccessException
+	 * @throws ApplicationException
+	 * @throws DuplicateRecordException
+	 *             : if updated user record is already exist
 	 */
-	public void update(FacultyDTO dto)throws DataAccessException;
+	public void update(FacultyDTO dto);
 
 	/**
 	 * Delete a Faculty
 	 * 
 	 * @param dto
-	 * @throws DataAccessException
+	 * @throws ApplicationException
 	 */
-	public void delete(long id) throws DataAccessException;
+	public void delete(long id);
 
 	/**
 	 * Find Faculty by Name
@@ -45,9 +48,9 @@ public interface FacultyDAOInt {
 	 * @param name
 	 *            : get parameter
 	 * @return dto
-	 * @throws DataAccessException
+	 * @throws ApplicationException
 	 */
-	public FacultyDTO findByUserId(Long userId) throws DataAccessException;
+	public FacultyDTO findByUserId(Long uId);
 
 	/**
 	 * Find Faculty by PK
@@ -55,9 +58,9 @@ public interface FacultyDAOInt {
 	 * @param pk
 	 *            : get parameter
 	 * @return dto
-	 * @throws DataAccessException
+	 * @throws ApplicationException
 	 */
-	public FacultyDTO findByPK(long pk) throws DataAccessException;
+	public FacultyDTO findByPK(long pk);
 
 	/**
 	 * Search Faculty with pagination
@@ -69,9 +72,9 @@ public interface FacultyDAOInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
-	 * @throws DataAccessException
+	 * @throws ApplicationException
 	 */
-	public List search(FacultyDTO dto, int pageNo, int pageSize) throws DataAccessException;
+	public List search(FacultyDTO dto, int pageNo, int pageSize);
 
 	/**
 	 * Search Faculty
@@ -79,17 +82,17 @@ public interface FacultyDAOInt {
 	 * @return list : List of Faculty
 	 * @param dto
 	 *            : Search Parameters
-	 * @throws DataAccessException
+	 * @throws ApplicationException
 	 */
-	public List search(FacultyDTO dto) throws DataAccessException;
+	public List search(FacultyDTO dto);
 
 	/**
 	 * Gets List of Faculty
 	 * 
 	 * @return list : List of Faculty
-	 * @throws DataAccessException
+	 * @throws DatabaseException
 	 */
-	public List list() throws DataAccessException;
+	public List list();
 
 	/**
 	 * get List of Faculty with pagination
@@ -99,8 +102,8 @@ public interface FacultyDAOInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
-	 * @throws DataAccessException
+	 * @throws ApplicationException
 	 */
-	public List list(int pageNo, int pageSize) throws DataAccessException;
+	public List list(int pageNo, int pageSize);
 
 }

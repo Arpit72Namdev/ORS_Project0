@@ -1,5 +1,6 @@
 package com.sunilos.proj0.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -10,10 +11,17 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sunilos.proj0.exception.DatabaseException;
+import com.sunilos.proj0.util.EmailBuilder;
 
 import com.sunilos.proj0.dto.UserDTO;
+
+import org.springframework.dao.DataAccessException;
+
+import com.sunilos.proj0.exception.DuplicateRecordException;
+import com.sunilos.proj0.exception.RecordNotFoundException;
 
 /**
  * User Data Access Object provides Database CRUD operations. It is implemented
@@ -29,7 +37,7 @@ import com.sunilos.proj0.dto.UserDTO;
  * 
  * @version 1.0
  * @since 1 Jan 2015
- * @author Business Delegate
+ * @author Sunil Sahu
  * @Copyright (c) Sunil Sahu
  * @url www.sunilbooks.com
  */
@@ -75,7 +83,6 @@ public class UserDAOHibImpl implements UserDAOInt {
 		List list = (List) sessionFactory.getCurrentSession()
 				.createCriteria(UserDTO.class)
 				.add(Restrictions.eq("login", login)).list();
-		System.out.println(list.size());
 		if (list.size() == 1) {
 			dto = (UserDTO) list.get(0);
 		}
@@ -133,7 +140,7 @@ public class UserDAOHibImpl implements UserDAOInt {
 			if (dto.getLastLogin() != null && dto.getLastLogin().getTime() > 0) {
 				criteria.add(Restrictions.eq("lastLogin", dto.getLastLogin()));
 			}
-			if (dto.getRoleId() != null && dto.getRoleId() > 0) {
+			if (dto.getRoleId() > 0) {
 				criteria.add(Restrictions.eq("roleId", dto.getRoleId()));
 			}
 			if (dto.getUnSuccessfulLogin() > 0) {
@@ -168,7 +175,6 @@ public class UserDAOHibImpl implements UserDAOInt {
 		log.debug("User Dao list Started");
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
 				UserDTO.class);
-		criteria.add(Restrictions.eq("roleId", 5L));
 		if (pageSize > 0) {
 			pageNo = ((pageNo - 1) * pageSize) + 1;
 			criteria.setFirstResult(pageNo);

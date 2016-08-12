@@ -7,7 +7,7 @@ import javax.persistence.Table;
 /**
  * User DTO class
  * 
- * @author Business Delegate
+ * @author SunilOS
  * @version 1.0
  * @Copyright (c) SunilOS
  */
@@ -37,8 +37,8 @@ public class CollegeDTO extends BaseDTO {
 	/**
 	 * Phoneno of College
 	 */
-	@Column(name = "MOBILE_NO", length = 15)
-	private String mobileNo;
+	@Column(name = "PHONE_NO", length = 15)
+	private String phoneNo;
 
 	public String getName() {
 		return name;
@@ -72,19 +72,12 @@ public class CollegeDTO extends BaseDTO {
 		this.city = city;
 	}
 
-	/**
-	 * @return the mobileNo
-	 */
-	public String getMobileNo() {
-		return mobileNo;
+	public String getPhoneNo() {
+		return phoneNo;
 	}
 
-	/**
-	 * @param mobileNo
-	 *            the mobileNo to set
-	 */
-	public void setMobileNo(String mobileNo) {
-		this.mobileNo = mobileNo;
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
 	}
 
 	@Override

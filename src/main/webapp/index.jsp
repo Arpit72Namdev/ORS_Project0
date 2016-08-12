@@ -6,16 +6,9 @@
 <!DOCTYPE h1 PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <body>
-	<h5></h5>
-	<h3 align="center">
-		<img alt="image not load" src="resources/img/logo.png" width="200"
-			height="100">
-	</h3>
+	<h1 align="Center" style="background-color: black;">
 
-	<h1 style="background-color: black;" align="Center">
-
-		<img alt="image" src="resources/img/customsirLogo.png" width="1200"
-			height="175" />
+		<img alt="image" src="resources/img/customLogo.png" width="500" height="135" border="0" />
 	</h1>
 	<h1 align="center">
 		<font color="red" size="10px"><a style="color: red;"

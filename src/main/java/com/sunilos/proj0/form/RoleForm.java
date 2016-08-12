@@ -13,19 +13,19 @@ import com.sunilos.proj0.dto.RoleDTO;
 public class RoleForm extends BaseForm {
 
 	@NotEmpty
-	@Pattern(regexp = "[a-zA-Z]*$", message = "{Pattern.form.roleName}")
+	@Pattern(regexp = "[a-zA-Z]*")
 	private String roleName;
 
 	@NotEmpty
 	private String roleDescription;
 
-	private Long[] ids;
+	private long[] ids;
 
-	public Long[] getIds() {
+	public long[] getIds() {
 		return ids;
 	}
 
-	public void setIds(Long[] ids) {
+	public void setIds(long[] ids) {
 		this.ids = ids;
 	}
 

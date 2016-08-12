@@ -4,7 +4,6 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.sun.org.apache.regexp.internal.recompile;
 import com.sunilos.proj0.dto.BaseDTO;
 import com.sunilos.proj0.dto.CollegeDTO;
 
@@ -19,23 +18,21 @@ import com.sunilos.proj0.dto.CollegeDTO;
 public class CollegeForm extends BaseForm {
 
 	@NotEmpty
-	@Pattern(regexp = "[a-z A-Z ]*$", message = "{Pattern.form.collegeName}")
 	private String name;
 
 	@NotEmpty
-	@Pattern(regexp = "[a-z A-Z 0-9 ]*$", message = "{Pattern.form.address}")
+	@Pattern(regexp = "^[a-zA-Z0-9]*$")
 	private String address;
 
 	@NotEmpty
-	@Pattern(regexp = "[a-zA-Z]*$", message = "{Pattern.form.state}")
+	
 	private String state;
 
 	@NotEmpty
-	@Pattern(regexp = "[a-zA-Z]*$", message = "{Pattern.form.city}")
+	
 	private String city;
 
 	@NotEmpty
-	@Pattern(regexp = "([7-9]{1}[0-9]{9})*$", message = "{Pattern.form.mobileNo}")
 	private String mobileNo;
 
 	private long[] Ids;
@@ -79,17 +76,11 @@ public class CollegeForm extends BaseForm {
 	public void setCity(String city) {
 		this.city = city;
 	}
-	
-	/**
-	 * @return the mobileNo
-	 */
+
 	public String getMobileNo() {
 		return mobileNo;
 	}
 
-	/**
-	 * @param mobileNo the mobileNo to set
-	 */
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
@@ -102,8 +93,9 @@ public class CollegeForm extends BaseForm {
 		dto.setAddress(address);
 		dto.setCity(city);
 		dto.setState(state);
-		dto.setMobileNo(mobileNo);
+		dto.setPhoneNo(mobileNo);
 		return dto;
+
 	}
 
 	@Override
@@ -114,7 +106,7 @@ public class CollegeForm extends BaseForm {
 		address = dto.getAddress();
 		city = dto.getCity();
 		state = dto.getState();
-		mobileNo = dto.getMobileNo();
+		mobileNo = dto.getPhoneNo();
 
 	}
 }

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html;charset=UTF-8 "
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
@@ -6,15 +6,10 @@
 <%@page isELIgnored="false"%>
 
 <div class="col-sm-offset-2">
-	<h1 class="col-sm-offset-2">
-		<span class="label label-primary"> <s:message
-				code="label.changePassword" /></span>
-	</h1>
+	<h1>ChangePassword</h1>
 
-	<c:url var="editUrl" value="/ctl/User/changepassword" />
 	<sf:form commandName="form" method="POST" class="form-horizontal">
 		<sf:hidden path="id" />
-		<h1></h1>
 		<c:choose>
 			<c:when test="${empty error }">
 				<div style="width: 50%; height: 10%;" class="alert alert-danger"
@@ -25,10 +20,7 @@
 			</c:when>
 			<c:otherwise>
 				<div style="width: 50%; height: 10%;" class="alert alert-danger">
-					<h5 align="center">
-						<strong>${error}</strong>
-					</h5>
-
+					<strong>Error !..</strong> ${error}
 				</div>
 
 			</c:otherwise>
@@ -44,52 +36,52 @@
 			</c:when>
 			<c:otherwise>
 				<div style="width: 50%; height: 10%;" class="alert alert-success">
-					<h5 align="center">
-						<strong>${success}</strong>
-					</h5>
+					<strong>Success !..</strong> ${success}
 				</div>
 
 			</c:otherwise>
 
 		</c:choose>
-		<h1></h1>
-		<br>
+
 		<div class="form-group">
 			<label class="col-md-2"><s:message code="label.oldpassword" />*</label>
 			<div class="col-sm-4">
-				<sf:password class="form-control" path="oldpassword" />
+				<sf:input class="form-control" path="oldpassword" />
+				&nbsp;
+				<sf:errors path="oldpassword" cssClass="error" />
 			</div>
-			<sf:errors path="oldpassword" cssClass="error" />
 		</div>
 		<div class="form-group">
 			<label class="col-md-2"><s:message code="label.newpassword" />*</label>
 			<div class="col-sm-4">
-				<sf:password class="form-control" path="newpassword" />
+				<sf:input class="form-control" path="newpassword" />
+				&nbsp;
+				<sf:errors path="newpassword" cssClass="error" />
 			</div>
-			<sf:errors path="newpassword" cssClass="error" />
 		</div>
 		<div class="form-group">
 			<label class="col-md-2"><s:message
-					code="label.confirmPassword" />*</label>
+					code="label.confirmpassword" />*</label>
 			<div class="col-sm-4">
-				<sf:password class="form-control" path="confirmpassword" />
+				<sf:input class="form-control" path="confirmpassword" />
+				&nbsp;
+				<sf:errors path="confirmpassword" cssClass="error" />
 			</div>
-			<sf:errors path="confirmpassword" cssClass="error" />
 		</div>
 
-		<div class="col-sm-offset-2">
+		<div class="col-sm-offset-4">
 			<button type="submit" name="operation" value="Save"
-				class="btn btn-primary">
-				<s:message code="label.save" />
-			</button>
-			<a href="${editUrl}" class="btn btn-primary"><s:message
-					code="label.cancel" /></a>
+				class="btn btn-primary">Submit</button>
+			&nbsp;&nbsp;
+			<button type="submit" name="operation" value="Cancel"
+				class="btn btn-primary">Cancel</button>
 
 		</div>
 
 
 
 	</sf:form>
+
+
+
 </div>
-
-

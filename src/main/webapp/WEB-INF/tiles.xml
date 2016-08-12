@@ -4,7 +4,7 @@
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
 <tiles-definitions>
 	<definition name="BaseLayout" template="/WEB-INF/pages/BaseLayout.jsp">
-		<put-attribute name="header" value="/WEB-INF/pages/Header3.jsp" />
+		<put-attribute name="header" value="/WEB-INF/pages/Header2.jsp" />
 		<put-attribute name="menu" value="/WEB-INF/pages/Menu.jsp" />
 		<put-attribute name="body" value="/WEB-INF/pages/Body.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/pages/Footer.jsp" />
@@ -36,11 +36,6 @@
 	<definition name="Login" extends="BaseLayout">
 		<put-attribute name="menu" value="/WEB-INF/pages/Menu.jsp"></put-attribute>
 		<put-attribute name="body" value="/WEB-INF/pages/Login.jsp" />
-	</definition>
-
-	<definition name="Error" extends="BaseLayout">
-		<put-attribute name="menu" value="/WEB-INF/pages/Menu.jsp"></put-attribute>
-		<put-attribute name="body" value="/WEB-INF/pages/Error.jsp" />
 	</definition>
 
 	<definition name="Welcome" extends="BaseLayout">
@@ -89,17 +84,6 @@
 		<put-attribute name="body" value="/WEB-INF/pages/RoleList.jsp" />
 	</definition>
 
-	<definition name="Course" extends="BaseLayout">
-		<put-attribute name="menu" value="/WEB-INF/pages/Menu.jsp"></put-attribute>
-		<put-attribute name="body" value="/WEB-INF/pages/Course.jsp" />
-	</definition>
-
-	<definition name="CourseList" extends="BaseLayout">
-		<put-attribute name="menu" value="/WEB-INF/pages/Menu.jsp"></put-attribute>
-		<put-attribute name="body" value="/WEB-INF/pages/CourseList.jsp" />
-	</definition>
-
-
 	<definition name="Student" extends="BaseLayout">
 		<put-attribute name="menu" value="/WEB-INF/pages/Menu.jsp"></put-attribute>
 		<put-attribute name="body" value="/WEB-INF/pages/Student.jsp" />
@@ -145,10 +129,12 @@
 			value="/WEB-INF/pages/UserRegistration.jsp" />
 	</definition>
 
+
 	<definition name="Faculty" extends="BaseLayout">
 		<put-attribute name="menu" value="/WEB-INF/pages/Menu.jsp"></put-attribute>
 		<put-attribute name="body" value="/WEB-INF/pages/Faculty.jsp" />
 	</definition>
+
 	<definition name="FacultyList" extends="BaseLayout">
 		<put-attribute name="menu" value="/WEB-INF/pages/Menu.jsp"></put-attribute>
 		<put-attribute name="body" value="/WEB-INF/pages/FacultyList.jsp" />
@@ -161,15 +147,6 @@
 	<definition name="CourseList" extends="BaseLayout">
 		<put-attribute name="menu" value="/WEB-INF/pages/Menu.jsp"></put-attribute>
 		<put-attribute name="body" value="/WEB-INF/pages/CourseList.jsp" />
-	</definition>
-
-	<definition name="TimeTable" extends="BaseLayout">
-		<put-attribute name="menu" value="/WEB-INF/pages/Menu.jsp"></put-attribute>
-		<put-attribute name="body" value="/WEB-INF/pages/TimeTable.jsp" />
-	</definition>
-	<definition name="TimeTableList" extends="BaseLayout">
-		<put-attribute name="menu" value="/WEB-INF/pages/Menu.jsp"></put-attribute>
-		<put-attribute name="body" value="/WEB-INF/pages/TimeTableList.jsp" />
 	</definition>
 
 </tiles-definitions>

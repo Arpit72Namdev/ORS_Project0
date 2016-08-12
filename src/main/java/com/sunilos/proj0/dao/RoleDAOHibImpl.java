@@ -9,16 +9,15 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.dao.DataAccessException;
-
 import com.sunilos.proj0.dto.CollegeDTO;
 import com.sunilos.proj0.dto.RoleDTO;
-import com.sunilos.proj0.dto.UserDTO;
+
 import com.sunilos.proj0.exception.DuplicateRecordException;
 
 /**
  * Hibernate implementation of Role DAO.
  * 
- * @author Business Delegate
+ * @author SunilOS
  * @version 1.0
  * @Copyright (c) SunilOS
  * 
@@ -53,8 +52,7 @@ public class RoleDAOHibImpl implements RoleDAOInt {
 
 	public void delete(long id) throws DataAccessException {
 		log.debug("Role Dao Delete Started");
-		RoleDTO dto = findByPK(id);
-		sessionFactory.getCurrentSession().delete(dto);
+		sessionFactory.getCurrentSession().delete(id);
 		log.debug("Role Dao Delete End");
 
 	}
@@ -65,8 +63,12 @@ public class RoleDAOHibImpl implements RoleDAOInt {
 		List list = sessionFactory.getCurrentSession()
 				.createCriteria(RoleDTO.class)
 				.add(Restrictions.eq("roleName", name)).list();
+
+		System.out.println("List Size in Find By Name Dao" + list.size());
+
 		if (list.size() == 1) {
 			dto = (RoleDTO) list.get(0);
+			System.out.println("DTO Not Null");
 		}
 		log.debug("Role DAO Find by Name Ended");
 		return dto;
@@ -75,9 +77,13 @@ public class RoleDAOHibImpl implements RoleDAOInt {
 
 	public RoleDTO findByPK(long pk) throws DataAccessException {
 		log.debug("RoleDAO Find by PK Started");
+		System.out.println("in find by pk dao start");
 		RoleDTO dto = null;
+		System.out.println(pk);
 		dto = (RoleDTO) sessionFactory.openSession().get(RoleDTO.class, pk);
+
 		log.debug("RoleDAO Find by PK Ended");
+		/* System.out.println("in find by pk dao end=" + dto.getId()); */
 		return dto;
 
 	}
@@ -132,7 +138,7 @@ public class RoleDAOHibImpl implements RoleDAOInt {
 			criteria.setMaxResults(pageSize);
 		}
 		List list = criteria.list();
-
+	
 		log.debug("Role Dao list End");
 		return list;
 	}

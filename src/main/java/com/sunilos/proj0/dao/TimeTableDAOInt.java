@@ -6,13 +6,6 @@ import org.springframework.dao.DataAccessException;
 
 import com.sunilos.proj0.dto.TimeTableDTO;
 import com.sunilos.proj0.exception.*;
-/**
- * TimeTAble DAO interface.
- * 
- * @author Business Delegate
- * @version 1.0
- * @Copyright (c) SunilOS
- */
 
 public interface TimeTableDAOInt {
 	/**
@@ -20,6 +13,8 @@ public interface TimeTableDAOInt {
 	 * 
 	 * @param dto
 	 * @throws DataAccessException
+	 * @throws DuplicateRecordException
+	 *             : throws when Course already exists
 	 */
 	public long add(TimeTableDTO dto) throws DataAccessException;
 
@@ -28,9 +23,11 @@ public interface TimeTableDAOInt {
 	 * 
 	 * @param dto
 	 * @throws DataAccessException
+	 * @throws DuplicateRecordException
+	 *             : if updated user record is already exist
 	 */
-	public void update(TimeTableDTO dto) throws DataAccessException
-			;
+	public void update(TimeTableDTO dto) throws DataAccessException,
+			DuplicateRecordException;
 
 	/**
 	 * Delete a Course

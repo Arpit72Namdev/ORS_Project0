@@ -6,39 +6,37 @@ import com.sunilos.proj0.dto.TimeTableDTO;
 import com.sunilos.proj0.exception.ApplicationException;
 import com.sunilos.proj0.exception.DatabaseException;
 import com.sunilos.proj0.exception.DuplicateRecordException;
-/**
- * TimeTAble Service interface.
- * 
- * @author Business Delegate
- * @version 1.0
- * @Copyright (c) SunilOS
- */
 
 public interface TimeTableServiceInt {
 	/**
 	 * Add a Course
 	 * 
 	 * @param dto
+	 * @throws ApplicationException
 	 * @throws DuplicateRecordException
 	 *             : throws when Course already exists
 	 */
-	public long add(TimeTableDTO dto) throws DuplicateRecordException;
+	public long add(TimeTableDTO dto) throws ApplicationException,
+			DuplicateRecordException;
 
 	/**
 	 * Update a Course
 	 * 
 	 * @param dto
+	 * @throws ApplicationException
 	 * @throws DuplicateRecordException
 	 *             : if updated user record is already exist
 	 */
-	public void update(TimeTableDTO dto) throws DuplicateRecordException;
+	public void update(TimeTableDTO dto) throws ApplicationException,
+			DuplicateRecordException;
 
 	/**
 	 * Delete a Course
 	 * 
 	 * @param dto
+	 * @throws ApplicationException
 	 */
-	public void delete(long id);
+	public void delete(long id) throws ApplicationException;
 
 	/**
 	 * Find Course by Name
@@ -46,8 +44,10 @@ public interface TimeTableServiceInt {
 	 * @param name
 	 *            : get parameter
 	 * @return dto
+	 * @throws ApplicationException
 	 */
-	public TimeTableDTO findByName(Long fid, String name);
+	public TimeTableDTO findByName(Long fid, String name)
+			throws ApplicationException;
 
 	/**
 	 * Find Course by PK
@@ -55,8 +55,9 @@ public interface TimeTableServiceInt {
 	 * @param pk
 	 *            : get parameter
 	 * @return dto
+	 * @throws ApplicationException
 	 */
-	public TimeTableDTO findByPK(long pk);
+	public TimeTableDTO findByPK(long pk) throws ApplicationException;
 
 	/**
 	 * Search Course with pagination
@@ -68,8 +69,10 @@ public interface TimeTableServiceInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
+	 * @throws ApplicationException
 	 */
-	public List search(TimeTableDTO dto, int pageNo, int pageSize);
+	public List search(TimeTableDTO dto, int pageNo, int pageSize)
+			throws ApplicationException;
 
 	/**
 	 * Search Course
@@ -77,15 +80,17 @@ public interface TimeTableServiceInt {
 	 * @return list : List of Course
 	 * @param dto
 	 *            : Search Parameters
+	 * @throws ApplicationException
 	 */
-	public List search(TimeTableDTO dto);
+	public List search(TimeTableDTO dto) throws ApplicationException;
 
 	/**
 	 * Gets List of Course
 	 * 
 	 * @return list : List of Course
+	 * @throws DatabaseException
 	 */
-	public List list();
+	public List list() throws ApplicationException;
 
 	/**
 	 * get List of Course with pagination
@@ -95,6 +100,8 @@ public interface TimeTableServiceInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
+	 * @throws ApplicationException
 	 */
-	public List list(int pageNo, int pageSize);
+	public List list(int pageNo, int pageSize) throws ApplicationException;
+
 }

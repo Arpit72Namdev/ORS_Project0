@@ -4,14 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-/**
- * Faculty POJO class. It is persistent object.
- * 
- * @author Business Delegate
- * @version 1.0
- * @Copyright (c) SunilOS
- */
-
 @Entity
 @Table(name = "ST_FACULTY")
 public class FacultyDTO extends BaseDTO {
@@ -22,11 +14,6 @@ public class FacultyDTO extends BaseDTO {
 	@Column(name = "FACULTYNAME", length = 50)
 	private String facultyName;
 	/**
-	 * Faculty Name
-	 */
-	@Column(name = "LOGIN", length = 50)
-	private String login;
-	/**
 	 * College Name
 	 */
 	@Column(name = "COLLEGENAME", length = 50)
@@ -34,32 +21,23 @@ public class FacultyDTO extends BaseDTO {
 	/**
 	 * College Id Foreign Key
 	 */
-	@Column(name = "COLLEGEID", length = 20)
-	private Long collegeId;
+	@Column(name = "COLLEGEID", length = 5)
+	private long collegeId;
 	/**
 	 * User Id Foreign Key
 	 */
-	@Column(name = "USERID", length = 20)
-	private Long userId;
+	@Column(name = "USERID", length = 5)
+	private long userId;
 
 	/**
 	 * accessor
 	 */
-
 	public String getFacultyName() {
 		return facultyName;
 	}
 
 	public void setFacultyName(String facultyName) {
 		this.facultyName = facultyName;
-	}
-
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
 	}
 
 	public String getCollegeName() {
@@ -70,32 +48,32 @@ public class FacultyDTO extends BaseDTO {
 		this.collegeName = collegeName;
 	}
 
-	public Long getCollegeId() {
+	public long getCollegeId() {
 		return collegeId;
 	}
 
-	public void setCollegeId(Long collegeId) {
+	public void setCollegeId(long collegeId) {
 		this.collegeId = collegeId;
 	}
 
-	public Long getUserId() {
+	public long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
 	}
 
 	@Override
 	public String getKey() {
 
-		return String.valueOf(id);
+		return id + "";
 	}
 
 	@Override
 	public String getValue() {
 
-		return facultyName + "-" + login;
+		return facultyName;
 	}
 
 }

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html;charset=UTF-8 "
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="sf"%>
@@ -14,16 +14,10 @@
 		<%-- <sf:hidden path="modifiedBy"></sf:hidden> --%>
 		<sf:hidden path="createdDatetime"></sf:hidden>
 		<sf:hidden path="modifiedDatetime"></sf:hidden>
-		<h1 class="col-sm-offset-1">
-			<c:choose>
-				<c:when test="${form.id>0}">
-					<span class="label label-primary">Edit College</span>
-				</c:when>
-				<c:otherwise>
-					<span class="label label-primary"><s:message
-							code="label.addCollege" /></span>
-				</c:otherwise>
-			</c:choose>
+
+
+		<h1 class="col-sm-offset-2">
+			<span class="label label-primary">Add College</span>
 		</h1>
 		<br>
 		<c:choose>
@@ -36,9 +30,7 @@
 			</c:when>
 			<c:otherwise>
 				<div style="width: 50%; height: 10%;" class="alert alert-danger">
-					<h5 align="center">
-						<strong>${error }</strong>
-					</h5>
+					<strong>Error !..</strong> ${error }
 				</div>
 
 			</c:otherwise>
@@ -54,9 +46,7 @@
 			</c:when>
 			<c:otherwise>
 				<div style="width: 50%; height: 10%;" class="alert alert-success">
-					<h5 align="center">
-						<strong>${success }</strong>
-					</h5>
+					<strong>Data Saved !..</strong> ${success }
 				</div>
 
 			</c:otherwise>
@@ -65,52 +55,53 @@
 
 
 		<div class="form-group">
-			<label class="col-sm-1"><s:message code="label.name" />*</label>
+			<label class="col-sm-2"><s:message code="label.name" />*</label>
 			<div class="col-sm-4">
 				<sf:input class="form-control" path="name" />
+				&nbsp;
+				<sf:errors path="name" cssClass="error" />
 			</div>
-			<sf:errors path="name" cssClass="error" />
 		</div>
 
 		<div class="form-group">
-			<label class="col-sm-1"><s:message code="label.address" />*</label>
+			<label class="col-sm-2"><s:message code="label.address" />*</label>
 			<div class="col-sm-4">
 				<sf:input class="form-control" path="address" />
+				&nbsp;
+				<sf:errors path="address" cssClass="error" />
 			</div>
-			<sf:errors path="address" cssClass="error" />
 		</div>
 		<div class="form-group">
-			<label class="col-sm-1"><s:message code="label.state" />*</label>
+			<label class="col-sm-2"><s:message code="label.state" />*</label>
 			<div class="col-sm-4">
 				<sf:input class="form-control" path="state" />
+				&nbsp;
+				<sf:errors path="state" cssClass="error" />
 			</div>
-			<sf:errors path="state" cssClass="error" />
 		</div>
 		<div class="form-group">
-			<label class="col-sm-1"><s:message code="label.city" />*</label>
+			<label class="col-sm-2"><s:message code="label.city" />*</label>
 			<div class="col-sm-4">
 				<sf:input class="form-control" path="city" />
+				&nbsp;
+				<sf:errors path="city" cssClass="error" />
 			</div>
-			<sf:errors path="city" cssClass="error" />
 		</div>
 
 		<div class="form-group">
-			<label class="col-sm-1"><s:message code="label.mobileNo" />*</label>
+			<label class="col-sm-2"><s:message code="label.mobileNo" />*</label>
 			<div class="col-sm-4">
 				<sf:input class="form-control" path="mobileNo" />
+				&nbsp;
+				<sf:errors path="mobileNo" cssClass="error" />
 			</div>
-			<sf:errors path="mobileNo" cssClass="error" />
 		</div>
-		<div class="col-sm-offset-1">
-			&ensp;
+		<div class="col-sm-offset-3">
 			<button type="submit" name="operation" value="Save"
-				class="btn btn-primary">
-				<s:message code="label.save" />
-			</button>
-			<button type="submit" name="operation" value="Cancel"
-				class="btn btn-primary">
-				<s:message code="label.cancel" />
-			</button>
+				class="btn btn-primary">Submit</button>
+			&nbsp;&nbsp;
+			<button type="reset" name="operation" value="Cancel"
+				class="btn btn-primary">Reset</button>
 
 		</div>
 

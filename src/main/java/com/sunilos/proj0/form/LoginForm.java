@@ -1,11 +1,8 @@
 package com.sunilos.proj0.form;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.sunilos.proj0.dto.BaseDTO;
@@ -24,8 +21,8 @@ public class LoginForm extends BaseForm {
 	@Email
 	private String emailId;
 
-	
-	@Length(max=10,min=5)
+	@NotEmpty
+	@Size(max = 10, min = 5)
 	private String password;
 
 	public String getEmailId() {
@@ -60,6 +57,6 @@ public class LoginForm extends BaseForm {
 		emailId = dto.getLogin();
 		password = dto.getPassword();
 		super.populate(bDto);
-
+		
 	}
 }

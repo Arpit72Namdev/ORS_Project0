@@ -1,7 +1,5 @@
 package com.sunilos.proj0.ctl;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 
 import javax.validation.Valid;
@@ -9,7 +7,6 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,19 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sunilos.proj0.dto.CollegeDTO;
-import com.sunilos.proj0.dto.StudentDTO;
 import com.sunilos.proj0.exception.ApplicationException;
-import com.sunilos.proj0.exception.DuplicateRecordException;
 import com.sunilos.proj0.form.CollegeForm;
 import com.sunilos.proj0.service.CollegeServiceInt;
-
-/**
- * Contains navigation logics for College and College List usecases.
- * 
- * @author Business Delegate
- * @version 1.0
- * @Copyright (c) SunilOS
- */
 
 @Controller
 @RequestMapping(value = "/ctl/College")
@@ -67,74 +54,54 @@ public class CollegeCtl extends BaseCtl {
 			BindingResult bindingResult, Model model) {
 
 		log.debug("CollegeCtl submit method started");
-		long id1 = form.getDto().getId();
-		if (OP_CANCEL.equals(operation) && (id1 != 0)) {
-			return "redirect:College/search";
-		} else if (OP_CANCEL.equals(operation)) {
-			return "redirect:College";
-		}
+
 		if (bindingResult.hasErrors()) {
-			List list = bindingResult.getAllErrors();
-			Iterator it = list.iterator();
-			while (it.hasNext()) {
-				Object ob = it.next();
-			}
 			return "College";
 		}
 
+		CollegeDTO dto = (CollegeDTO) form.getDto();
+
 		try {
 			if (OP_SAVE.equalsIgnoreCase(operation)) {
-
-				CollegeDTO dto = (CollegeDTO) form.getDto();
-				if (dto.getId() != 0) {
+				if (dto.getId() > 0) {
 					service.update(dto);
-					String msg = messageSource.getMessage("message.update",
-							null, locale);
-					model.addAttribute("success", msg);
-
+					model.addAttribute("success", "Data updated successfully");
 				} else {
-					service.add(dto);
+					Long id = service.add(dto);
+					form.setId(id);
 					String msg = messageSource.getMessage("message.success",
 							null, locale);
 					model.addAttribute("success", msg);
-
 				}
+
+			} else if (OP_DELETE.equalsIgnoreCase(operation)) {
+				service.delete(form.getId());
+
+				String msg = messageSource.getMessage("message.success", null,
+						locale);
+				model.addAttribute("success", msg);
+
+				return "redirect:College/search";
 			}
-		} catch (DuplicateRecordException e) {
-			String msg = messageSource
-					.getMessage("error.college", null, locale);
-			model.addAttribute("error", msg);
+
+		} catch (Exception e) {
 			log.error(e);
-
+			model.addAttribute("error", "Critical Issue ,College Name is already Exist");
 		}
-
 		return "College";
-
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public String searchList(@ModelAttribute("form") CollegeForm form,
 			Model model) throws ApplicationException {
-		CollegeDTO dto = new CollegeDTO();
-		int i = service.search(dto).size();
-		int size = 0;
-		if (i % 5 == 0) {
-
-			size = i / 5;
-		} else {
-			size = (i / 5) + 1;
-		}
-		model.addAttribute("size", size);
-
 		model.addAttribute("list",
-				service.search(dto, form.getPageNo(), form.getPageSize()));
+				service.search(null, form.getPageNo(), form.getPageSize()));
 		return "CollegeList";
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public String searchList(Locale locale,
 			@ModelAttribute("form") CollegeForm form,
-			@RequestParam(required = false) Integer pageNO,
 			@RequestParam(required = false) String operation, Model model)
 			throws ApplicationException {
 
@@ -142,34 +109,26 @@ public class CollegeCtl extends BaseCtl {
 
 		// Calculate next page number
 		int pageNo = form.getPageNo();
-		if (pageNO != null && pageNO > 0) {
-			pageNo = pageNO;
 
+		if (OP_NEXT.equals(operation)) {
+			pageNo++;
+		} else if (OP_PREVIOUS.equals(operation)) {
+			pageNo--;
 		}
-		if (OP_SEARCH.equals(operation)) {
-			pageNo = 1;
-		}
+
 		pageNo = (pageNo < 1) ? 1 : pageNo;
 
 		form.setPageNo(pageNo);
-		try {
-			if (OP_DELETE.equals(operation)) {
-				pageNo = 1;
-				if (form.getIds() != null) {
-					for (long id : form.getIds()) {
-						service.delete(id);
-						String msg = messageSource.getMessage("message.delete",
-								null, locale);
-						model.addAttribute("success", msg);
-					}
-				} else {
-					String msg = messageSource.getMessage(
-							"message.delete.error", null, locale);
-					model.addAttribute("error", msg);
-				}
+
+		if (OP_DELETE.equals(operation) && form.getIds() != null) {
+			for (long id : form.getIds()) {
+				service.delete(id);
 			}
-		} catch (Exception e) {
-			return "Error";
+
+			String msg = messageSource.getMessage("message.success", null,
+					locale);
+			model.addAttribute("success", msg);
+
 		}
 
 		// Get search attributes
@@ -177,20 +136,6 @@ public class CollegeCtl extends BaseCtl {
 
 		model.addAttribute("list",
 				service.search(dto, pageNo, form.getPageSize()));
-
-		int i = service.search(dto).size();
-		int size = 0;
-		if (i % 5 == 0) {
-			size = i / 5;
-		} else {
-			size = (i / 5) + 1;
-		}
-		if (i == 0) {
-			String msg = messageSource.getMessage("error.notFound", null,
-					locale);
-			model.addAttribute("error", msg);
-		}
-		model.addAttribute("size", size);
 
 		return "CollegeList";
 	}

@@ -11,7 +11,7 @@ import com.sunilos.proj0.exception.*;
  * 
  * Student DAO interface.
  * 
- * @author Business Delegate
+ * @author SunilOS
  * @version 1.0
  * @Copyright (c) SunilOS
  */
@@ -22,7 +22,9 @@ public interface StudentDAOInt {
 	 * 
 	 * @param dto
 	 * @throws DataAccessException
-		 */
+	 * @throws DuplicateRecordException
+	 *             : throws when Student already exists
+	 */
 	public long add(StudentDTO dto) throws DataAccessException;
 
 	/**
@@ -30,7 +32,9 @@ public interface StudentDAOInt {
 	 * 
 	 * @param dto
 	 * @throws DataAccessException
-		 */
+	 * @throws DuplicateRecordException
+	 *             : if updated user record is already exist
+	 */
 	public void update(StudentDTO dto) throws DataAccessException;
 
 	/**
@@ -90,8 +94,7 @@ public interface StudentDAOInt {
 	 * Gets List of College
 	 * 
 	 * @return list : List of College
-	 * @throws DataAccessException
-	
+	 * @throws DatabaseException
 	 */
 	public List list() throws DataAccessException;
 

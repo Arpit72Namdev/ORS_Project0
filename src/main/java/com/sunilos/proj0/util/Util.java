@@ -3,7 +3,6 @@ package com.sunilos.proj0.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 public class Util {
 	public static Date getDate(String date) {
 
@@ -52,5 +51,4 @@ public class Util {
 		return dateString;
 	}
 
-	
 }

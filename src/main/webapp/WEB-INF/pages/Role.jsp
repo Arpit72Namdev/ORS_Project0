@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html;charset=UTF-8 "
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="sf"%>
@@ -17,16 +17,8 @@
 
 
 
-		<h1 class="col-sm-offset-1">
-			<c:choose>
-				<c:when test="${form.id > 0}">
-					<span class="label label-primary">Edit Role</span>
-				</c:when>
-				<c:otherwise>
-					<span class="label label-primary"><s:message
-							code="label.addRole" /></span>
-				</c:otherwise>
-			</c:choose>
+		<h1 class="col-sm-offset-2">
+			<span class="label label-primary">Add Role</span>
 		</h1>
 		<br>
 		<c:choose>
@@ -39,9 +31,7 @@
 			</c:when>
 			<c:otherwise>
 				<div style="width: 50%; height: 10%;" class="alert alert-danger">
-					<h5 align="center">
-						<strong>${error }</strong>
-					</h5>
+					<strong>Error !..</strong> ${error }
 				</div>
 
 			</c:otherwise>
@@ -57,49 +47,47 @@
 			</c:when>
 			<c:otherwise>
 				<div style="width: 50%; height: 10%;" class="alert alert-success">
-					<h5 align="center">
-						<strong>${success }</strong>
-					</h5>
+					<strong>Data Saved !..</strong> ${success }
 				</div>
 
 			</c:otherwise>
 
 		</c:choose>
 		<div class="form-group">
-			<label class="col-sm-1"><s:message code="label.role" />*</label>
+			<label class="col-sm-2"><s:message code="label.role" />*</label>
 			<div class="col-sm-4">
 				<sf:input class="form-control" path="roleName" />
+				&nbsp;
+				<sf:errors path="roleName" cssClass="error" />
 			</div>
-			<sf:errors path="roleName" cssClass="error" />
 		</div>
 
 		<div class="form-group">
-			<label class="col-sm-1"><s:message code="label.description" />*</label>
+			<label class="col-sm-2"><s:message code="label.description" />*</label>
 			<div class="col-sm-4">
 				<sf:textarea class="form-control" path="roleDescription" rows="3"
 					cols="2" />
 				<%-- <sf:input class="form-control" path="roleDescription" /> --%>
+				&nbsp;
+				<sf:errors path="roleDescription" cssClass="error" />
 			</div>
-			<sf:errors path="roleDescription" cssClass="error" />
 		</div>
 
 
 
-		<div class="col-sm-offset-1">
-			&ensp;
+		<div class="col-sm-offset-4">
 			<button type="submit" class="btn btn-primary" name="operation"
-				value="Save">
-				<s:message code="label.save" />
-			</button>
+				value="Save">Save</button>
+
 			<button type="submit" class="btn btn-primary" name="operation"
-				value="Cancel">
-				<s:message code="label.cancel" />
-			</button>
+				value="Cancel">Cancel</button>
+
+
 		</div>
 
 	</sf:form>
+
+
+
 </div>
-
-
-
 

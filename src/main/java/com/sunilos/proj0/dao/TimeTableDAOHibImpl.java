@@ -16,13 +16,6 @@ import com.sunilos.proj0.dto.FacultyDTO;
 import com.sunilos.proj0.dto.TimeTableDTO;
 
 import com.sunilos.proj0.exception.DuplicateRecordException;
-/**
- * Hibernate implementation of TimeTable DAO.
- * 
- * @author Business Delegate
- * @version 1.0
- * @Copyright (c) SunilOS
- */
 
 @Repository("timetableDAO")
 public class TimeTableDAOHibImpl implements TimeTableDAOInt {
@@ -36,21 +29,39 @@ public class TimeTableDAOHibImpl implements TimeTableDAOInt {
 		this.sessionFactory = sessionFactory;
 	}
 
+	
 	public long add(TimeTableDTO dto) throws DataAccessException {
 		log.debug("TimeTable Dao Add started");
+		FacultyDAOHibImpl fmodel = new FacultyDAOHibImpl();
+		FacultyDTO fDto = fmodel.findByPK(dto.getUserId());
+		dto.setFacultyName(fDto.getFacultyName());
+
+		CourseDAOHibImpl cmodel = new CourseDAOHibImpl();
+		CourseDTO cDto = cmodel.findByPK(dto.getCourseId());
+		dto.setCourseName(cDto.getCourseName());
+		dto.setSubject(cDto.getSubject());
+
 		long pk = (Long) sessionFactory.getCurrentSession().save(dto);
 		log.debug("TimeTable Dao Add End");
 		return pk;
 
 	}
 
-	public void update(TimeTableDTO dto) throws DataAccessException {
+	
+	public void update(TimeTableDTO dto) throws DataAccessException,
+			DuplicateRecordException {
 		log.debug("TimeTable Dao update Started");
+		FacultyDAOHibImpl fmodel = new FacultyDAOHibImpl();
+		FacultyDTO fDto = fmodel.findByPK(dto.getUserId());
+		dto.setFacultyName(fDto.getFacultyName());
+
 		sessionFactory.getCurrentSession().update(dto);
+
 		log.debug("TimeTable Dao update End");
 
 	}
 
+	
 	public void delete(long id) throws DataAccessException {
 		log.debug("TimeTable Dao delete started");
 		TimeTableDTO dto = new TimeTableDTO();
@@ -60,6 +71,7 @@ public class TimeTableDAOHibImpl implements TimeTableDAOInt {
 
 	}
 
+	
 	public TimeTableDTO findByName(Long fid, String name)
 			throws DataAccessException {
 		log.debug("TimeTable Dao findByName Started");
@@ -79,6 +91,7 @@ public class TimeTableDAOHibImpl implements TimeTableDAOInt {
 		return dto;
 	}
 
+	
 	public TimeTableDTO findByPK(long pk) throws DataAccessException {
 		log.debug("TimeTable Dao findBypk Started");
 		Session session = sessionFactory.getCurrentSession();
@@ -89,6 +102,7 @@ public class TimeTableDAOHibImpl implements TimeTableDAOInt {
 
 	}
 
+	
 	public List search(TimeTableDTO dto, int pageNo, int pageSize)
 			throws DataAccessException {
 		log.debug("TimeTable Dao search Started");
@@ -104,13 +118,8 @@ public class TimeTableDAOHibImpl implements TimeTableDAOInt {
 				criteria.add(Restrictions.like("facultyName",
 						dto.getFacultyName() + "%"));
 			}
-			if (dto.getCourseName() != null && dto.getCourseName().length() > 0) {
-				criteria.add(Restrictions.like("courseName",
-						dto.getCourseName() + "%"));
-			}
-			if (dto.getSubjectName() != null
-					&& dto.getSubjectName().length() > 0) {
-				criteria.add(Restrictions.like("subjectName", dto.getSubjectName()
+			if (dto.getSubject() != null && dto.getSubject().length() > 0) {
+				criteria.add(Restrictions.like("subject", dto.getSubject()
 						+ "%"));
 			}
 			// if page size is greater than zero the apply pagination
@@ -123,16 +132,19 @@ public class TimeTableDAOHibImpl implements TimeTableDAOInt {
 		return criteria.list();
 	}
 
+	
 	public List search(TimeTableDTO dto) throws DataAccessException {
 
 		return search(dto, 0, 0);
 	}
 
+	
 	public List list() throws DataAccessException {
 
 		return list(0, 0);
 	}
 
+	
 	public List list(int pageNo, int pageSize) throws DataAccessException {
 		log.debug("TimeTable Dao list Started");
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(

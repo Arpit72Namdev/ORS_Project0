@@ -1,13 +1,11 @@
 package com.sunilos.proj0.ctl;
 
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.xml.ws.BindingType;
 
 import org.springframework.validation.BindingResult;
 import org.apache.log4j.Logger;
@@ -27,17 +25,7 @@ import com.sunilos.proj0.exception.RecordNotFoundException;
 import com.sunilos.proj0.form.ForgetPasswordForm;
 import com.sunilos.proj0.form.LoginForm;
 import com.sunilos.proj0.form.UserRegistrationForm;
-import com.sunilos.proj0.service.RoleServiceInt;
 import com.sunilos.proj0.service.UserServiceInt;
-import com.sunilos.proj0.util.DataValidator;
-
-/**
- * Contains navigation logics for Login ,Forget password and User List usecases.
- * 
- * @author Business Delegate
- * @version 1.0
- * @Copyright (c) SunilOS
- */
 
 @Controller
 public class LoginCtl extends BaseCtl {
@@ -51,13 +39,7 @@ public class LoginCtl extends BaseCtl {
 	private UserServiceInt service;
 
 	@Autowired
-	private RoleServiceInt roleService;
-
-	@Autowired
 	private MessageSource messageSources;
-
-	@Autowired
-	private DataValidator dataValidator;
 
 	@RequestMapping(value = "/Login", method = RequestMethod.GET)
 	public String display(@ModelAttribute("form") LoginForm form,
@@ -67,31 +49,30 @@ public class LoginCtl extends BaseCtl {
 		return "Login";
 	}
 
-	@SuppressWarnings("unused")
 	@RequestMapping(value = "/Login", method = RequestMethod.POST)
 	public String submit(Locale locale, HttpSession session,
-			HttpServletResponse response,
 
-			@ModelAttribute("form") @Valid LoginForm form,
-			BindingResult bindingResult, Model model)
-			throws ApplicationException, RecordNotFoundException, IOException {
+	@ModelAttribute("form") @Valid LoginForm form, BindingResult bindingResult,
+			Model model) throws ApplicationException, RecordNotFoundException {
 
 		log.debug("Login submit started");
+
+		System.out.println("result Fail:" + bindingResult.hasErrors());
+
 		if (bindingResult.hasErrors()) {
 			return "Login";
 		}
+
+		System.out.println(form.getOperation());
 		if (OP_SINGIN.equalsIgnoreCase(form.getOperation())) {
 			UserDTO dto = new UserDTO();
 			dto.setLogin(form.getEmailId());
 			dto.setPassword(form.getPassword());
 
 			dto = service.authenticate(dto);
+
 			if (dto != null) {
-				RoleDTO roleDTO = roleService.findByPK(dto.getRoleId());
-				session.setAttribute("role", roleDTO);
-
 				session.setAttribute("user", dto);
-
 				model.addAttribute("message", "Welcome :" + form.getEmailId());
 			} else {
 				String msg = messageSources.getMessage("login.error", null,
@@ -116,7 +97,8 @@ public class LoginCtl extends BaseCtl {
 	@RequestMapping(value = "/ForgetPassword", method = RequestMethod.POST)
 	public String submit(Locale locale,
 			@ModelAttribute("form") @Valid ForgetPasswordForm form,
-			BindingResult bindingResult, Model model) {
+			BindingResult bindingResult, Model model)
+			throws ApplicationException, RecordNotFoundException {
 
 		if (bindingResult.hasErrors()) {
 			return "ForgetPassword";
@@ -131,15 +113,14 @@ public class LoginCtl extends BaseCtl {
 		}
 		try {
 			service.forgetPassword(form.getLogin());
-			String msg = messageSources.getMessage("forgetpass.success", null,
-					locale);
-			model.addAttribute("success", msg);
+			model.addAttribute("success",
+					"Password has been successfully sent to you emailId !..");
 		} catch (ApplicationException e) {
-			log.error("Critical Issue ", e);
-			return "Error";
+			log.error("Critical Issue", e);
+			e.printStackTrace();
 		}
-
 		return "ForgetPassword";
+
 	}
 
 	@RequestMapping(value = "/SignUp", method = RequestMethod.GET)
@@ -152,54 +133,20 @@ public class LoginCtl extends BaseCtl {
 	@RequestMapping(value = "/SignUp", method = RequestMethod.POST)
 	public String submit(Model model,
 			@ModelAttribute("form") @Valid UserRegistrationForm form,
-			BindingResult bindingResult, Locale locale) {
+			BindingResult bindingResult, Locale locale)
+			throws ApplicationException, DuplicateRecordException {
 		log.debug("userRegistration submit method started");
 
-		UserDTO dto = null;
-		dto = service.findByLogin(form.getLogin());
-		if (dto != null) {
-			String msg = messageSources.getMessage("register.error", null,
-					locale);
-			model.addAttribute("error", msg);
-			return "UserRegistration";
-		} else {
-
-		}
-
-		if (form.getDob() != null) {
-			if (!DataValidator.ageLimit(form.getDob())) {
-				bindingResult.rejectValue("dob", "error.dob");
-				return "UserRegistration";
-			}
-		}
 		if (bindingResult.hasErrors()) {
-			List list = bindingResult.getAllErrors();
-			Iterator it = list.iterator();
-			while (it.hasNext()) {
-				Object ob = it.next();
-			}
 			return "UserRegistration";
 		}
-		dto = (UserDTO) form.getDto();
 
-		dto.setRoleId((long) RoleDTO.STUDENT);
-		try {
+		UserDTO dto = (UserDTO) form.getDto();
+		dto.setRoleId(RoleDTO.STUDENT);
+		service.registerUser(dto);
 
-			service.registerUser(dto);
-		} catch (ApplicationException e) {
-			return "Error";
-		} catch (DuplicateRecordException e) {
-			model.addAttribute("error", e.getMessage());
-		}
-		String msg = messageSources
-				.getMessage("register.success", null, locale);
-		model.addAttribute("success", msg);
-		return "UserRegistration";
+		return "redirect:Login";
 
 	}
-	/*
-	 * @RequestMapping(value = "/Error", method = RequestMethod.GET) public
-	 * String error() { return "Error"; }
-	 */
 
 }

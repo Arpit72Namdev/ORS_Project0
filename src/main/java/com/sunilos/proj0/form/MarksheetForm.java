@@ -1,8 +1,5 @@
 package com.sunilos.proj0.form;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -15,31 +12,55 @@ import com.sunilos.proj0.dto.MarksheetDTO;
 
 public class MarksheetForm extends BaseForm {
 
+	protected long id = 0;
+
 	@NotEmpty
-	@Pattern(regexp = "[a-zA-Z0-9]*$", message = "{Pattern.form.rollNo}")
 	private String rollNo;
-
-	@NotNull
-	@Min(0)
-	@Max(100)
-	private Integer physics;
-
-	@NotNull
-	@Min(0)
-	@Max(100)
-	private Integer chemistry;
-
-	@NotNull
-	@Min(0)
-	@Max(100)
-	private Integer maths;
-
-	@NotNull
-	protected Long studentId;
 
 	private String name;
 
-	private Long[] Ids;
+	@NotNull
+	@Max(100)
+	@Min(0)
+	private int physics;
+
+	@NotNull
+	@Max(100)
+	@Min(0)
+	private int chemistry;
+
+	@NotNull
+	@Max(100)
+	@Min(0)
+	private int maths;
+
+	protected long studentId;
+
+	private long[] Ids;
+
+	public long[] getIds() {
+		return Ids;
+	}
+
+	public void setIds(long[] ids) {
+		Ids = ids;
+	}
+
+	public long getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(long studentId) {
+		this.studentId = studentId;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public String getRollNo() {
 		return rollNo;
@@ -47,38 +68,6 @@ public class MarksheetForm extends BaseForm {
 
 	public void setRollNo(String rollNo) {
 		this.rollNo = rollNo;
-	}
-
-	public Integer getPhysics() {
-		return physics;
-	}
-
-	public void setPhysics(Integer physics) {
-		this.physics = physics;
-	}
-
-	public Integer getChemistry() {
-		return chemistry;
-	}
-
-	public void setChemistry(Integer chemistry) {
-		this.chemistry = chemistry;
-	}
-
-	public Integer getMaths() {
-		return maths;
-	}
-
-	public void setMaths(Integer maths) {
-		this.maths = maths;
-	}
-
-	public Long getStudentId() {
-		return studentId;
-	}
-
-	public void setStudentId(Long studentId) {
-		this.studentId = studentId;
 	}
 
 	public String getName() {
@@ -89,12 +78,28 @@ public class MarksheetForm extends BaseForm {
 		this.name = name;
 	}
 
-	public Long[] getIds() {
-		return Ids;
+	public int getPhysics() {
+		return physics;
 	}
 
-	public void setIds(Long[] ids) {
-		Ids = ids;
+	public void setPhysics(int physics) {
+		this.physics = physics;
+	}
+
+	public int getChemistry() {
+		return chemistry;
+	}
+
+	public void setChemistry(int chemistry) {
+		this.chemistry = chemistry;
+	}
+
+	public int getMaths() {
+		return maths;
+	}
+
+	public void setMaths(int maths) {
+		this.maths = maths;
 	}
 
 	@Override
@@ -107,10 +112,6 @@ public class MarksheetForm extends BaseForm {
 		dto.setRollNo(rollNo);
 		dto.setStudentId(studentId);
 		dto.setName(name);
-		dto.setCreatedBy(createdBy);
-		/* dto.setModifiedBy(modifiedBy); */
-		dto.setCreatedDatetime(new Timestamp(new Date().getTime()));
-		dto.setModifiedDatetime(new Timestamp(new Date().getTime()));
 		return dto;
 
 	}
@@ -119,15 +120,12 @@ public class MarksheetForm extends BaseForm {
 	public void populate(BaseDTO bDto) {
 		MarksheetDTO dto = (MarksheetDTO) bDto;
 		id = dto.getId();
+		name = dto.getName();
 		maths = dto.getMaths();
 		physics = dto.getPhysics();
 		chemistry = dto.getChemistry();
 		rollNo = dto.getRollNo();
 		studentId = dto.getStudentId();
-		name = dto.getName();
-		createdBy = dto.getCreatedBy();
-		/* modifiedBy = dto.getModifiedBy(); */
-		createdDatetime = dto.getCreatedDatetime().getTime();
-		modifiedDatetime = dto.getModifiedDatetime().getTime();
+
 	}
 }

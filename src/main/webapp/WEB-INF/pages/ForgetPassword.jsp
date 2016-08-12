@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html;charset=UTF-8 "
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="s" uri="http://www.springframework.org/tags"%>
@@ -11,8 +11,8 @@
 <div class="col-sm-offset-2">
 
 	<h1 class="col-sm-offset-1">
-		&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-primary"><s:message
-				code="label.forgetPassword2" /></span>
+		&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-primary">Forget
+			Password</span>
 	</h1>
 	<sf:form method="POST" commandName="form">
 		<sf:hidden path="id" />
@@ -20,15 +20,13 @@
 			<c:when test="${empty error }">
 				<div style="width: 50%; height: 10%;" class="alert alert-danger"
 					hidden="">
-					<strong></strong> ${error}
+					<strong>Error !..</strong> ${error}
 				</div>
 
 			</c:when>
 			<c:otherwise>
 				<div style="width: 50%; height: 10%;" class="alert alert-danger">
-					<h5 align="center">
-						<strong>${error}</strong>
-					</h5>
+					<strong>Error !..</strong> ${error}
 				</div>
 
 			</c:otherwise>
@@ -38,14 +36,12 @@
 			<c:when test="${empty success }">
 				<div style="width: 50%; height: 10%;" class="alert alert-success"
 					hidden="">
-					<strong>Success !..</strong> ${success}
+					<strong>Error !..</strong> ${success}
 				</div>
 			</c:when>
 			<c:otherwise>
 				<div style="width: 50%; height: 10%;" class="alert alert-success">
-					<h5 align="center">
-						<strong>${success}</strong>
-					</h5>
+					<strong>Error !..</strong> ${success}
 				</div>
 
 			</c:otherwise>
@@ -53,8 +49,8 @@
 		</c:choose>
 
 		<h3 class="col-sm-offset-0">
-			<span class="label label-primary"><s:message
-					code="label.forgetPassword3" /></span>
+			<span class="label label-primary">Submit your email address
+				and we'll send you password.</span>
 		</h3>
 
 		<div class="form-group">

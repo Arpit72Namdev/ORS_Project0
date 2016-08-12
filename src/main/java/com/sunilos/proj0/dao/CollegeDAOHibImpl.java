@@ -19,7 +19,7 @@ import com.sunilos.proj0.exception.DuplicateRecordException;
 /**
  * Hibernate implementation of College DAO.
  * 
- * @author Business Delegate
+ * @author SunilOS
  * @version 1.0
  * @Copyright (c) SunilOS
  */
@@ -102,8 +102,8 @@ public class CollegeDAOHibImpl implements CollegeDAOInt {
 			if (dto.getCity() != null && dto.getCity().length() > 0) {
 				c.add(Restrictions.like("city", dto.getCity() + "%"));
 			}
-			if (dto.getMobileNo() != null && dto.getMobileNo().length() > 0) {
-				c.add(Restrictions.eq("phoneNo", dto.getMobileNo()));
+			if (dto.getPhoneNo() != null && dto.getPhoneNo().length() > 0) {
+				c.add(Restrictions.eq("phoneNo", dto.getPhoneNo()));
 			}
 		}
 

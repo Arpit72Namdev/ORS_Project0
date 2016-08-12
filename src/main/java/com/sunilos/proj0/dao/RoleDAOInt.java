@@ -11,7 +11,7 @@ import com.sunilos.proj0.exception.*;
  * 
  * Role DAO interface.
  * 
- * @author Business Delegate
+ * @author SunilOS
  * @version 1.0
  * @Copyright (c) SunilOS
  */
@@ -23,7 +23,9 @@ public interface RoleDAOInt {
 	 * 
 	 * @param dto
 	 * @throws DataAccessException
-		 */
+	 * @throws DuplicateRecordException
+	 *             : throws when Role already exists
+	 */
 	public long add(RoleDTO dto) throws DataAccessException;
 
 	/**
@@ -31,7 +33,9 @@ public interface RoleDAOInt {
 	 * 
 	 * @param dto
 	 * @throws DataAccessException
-		 */
+	 * @throws DuplicateRecordException
+	 *             : if updated user record is already exist
+	 */
 	public void update(RoleDTO dto) throws DataAccessException;
 
 	/**
@@ -91,8 +95,7 @@ public interface RoleDAOInt {
 	 * Gets List of Role
 	 * 
 	 * @return list : List of Role
-	 * @throws DataAccessException
-	
+	 * @throws DatabaseException
 	 */
 	public List list() throws DataAccessException;
 

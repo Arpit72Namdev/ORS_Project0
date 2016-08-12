@@ -20,7 +20,7 @@
 	<bean id="dataSourceC3P0" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/demo_ors1" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/sendhav" />
 		<property name="user" value="root" />
 		<property name="password" value="root" />
 		<property name="acquireIncrement" value="2" />
@@ -29,9 +29,9 @@
 		<property name="maxIdleTime" value="60" />
 	</bean>
 
-	<!-- <bean id="sessionFactory"
-		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"> -->
-		 <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"> 
+	<!-- <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"> -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 
 		<property name="dataSource">
 			<ref bean="dataSourceC3P0" />
