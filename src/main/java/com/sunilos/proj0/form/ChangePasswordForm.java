@@ -4,19 +4,15 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.sunilos.proj0.dto.BaseDTO;
-import com.sunilos.proj0.dto.UserDTO;
 
 public class ChangePasswordForm extends BaseForm {
 
 	@NotEmpty
 	private String oldpassword;
 
-	@NotEmpty
 	@Size(min = 5, max = 10)
 	private String newpassword;
 
-	@NotEmpty
 	@Size(min = 5, max = 10)
 	private String confirmpassword;
 

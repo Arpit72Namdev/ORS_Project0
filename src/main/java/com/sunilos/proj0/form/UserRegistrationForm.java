@@ -2,13 +2,14 @@ package com.sunilos.proj0.form;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import com.mysql.jdbc.Util;
 import com.sunilos.proj0.dto.BaseDTO;
 import com.sunilos.proj0.dto.UserDTO;
 
@@ -24,29 +25,32 @@ import com.sunilos.proj0.dto.UserDTO;
 
 public class UserRegistrationForm extends BaseForm {
 	@NotEmpty
-	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "First name cannot contain space")
+	@Pattern(regexp = "[a-zA-Z]*$", message = "{Pattern.form.firstName}")
 	private String firstName;
 
 	@NotEmpty
-	@Pattern(regexp = "[a-zA-Z]*")
+	@Pattern(regexp = "[a-zA-Z]*$", message = "{Pattern.form.lastName}")
 	private String lastName;
 
-	@Email
 	@NotEmpty
+	@Email
 	private String login;
 
-	@NotEmpty
 	@Size(max = 10, min = 5)
 	private String password;
+
+	@Size(max = 10, min = 5)
+	private String confirmPassword;
 
 	@NotEmpty
 	private String gender;
 
-	@NotEmpty
-	private String dob;
+	@NotNull
+	@DateTimeFormat(pattern = "MM/dd/yyyy")
+	private Date dob;
 
 	@NotEmpty
-	@Pattern(regexp = "^[7-9][0-9]{9}$", message = "Mobile no start form 789")
+	@Pattern(regexp = "([7-9]{1}[0-9]{9})*$", message = "{Pattern.form.mobileNo}")
 	private String mobileNo;
 
 	public String getFirstName() {
@@ -81,6 +85,14 @@ public class UserRegistrationForm extends BaseForm {
 		this.password = password;
 	}
 
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
+
 	public String getGender() {
 		return gender;
 	}
@@ -89,11 +101,11 @@ public class UserRegistrationForm extends BaseForm {
 		this.gender = gender;
 	}
 
-	public String getDob() {
+	public Date getDob() {
 		return dob;
 	}
 
-	public void setDob(String dob) {
+	public void setDob(Date dob) {
 		this.dob = dob;
 	}
 
@@ -113,7 +125,7 @@ public class UserRegistrationForm extends BaseForm {
 		dto.setLastName(lastName);
 		dto.setPassword(password);
 		dto.setLogin(login);
-		dto.setDob(new Date(dob));
+		dto.setDob(dob);
 		dto.setGender(gender);
 		dto.setMobileNo(mobileNo);
 
@@ -128,6 +140,7 @@ public class UserRegistrationForm extends BaseForm {
 		lastName = dto.getLastName();
 		login = dto.getLogin();
 		password = dto.getPassword();
+		dob = dto.getDob();
 		mobileNo = dto.getMobileNo();
 		gender = dto.getGender();
 		super.populate(bDto);

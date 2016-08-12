@@ -1,20 +1,22 @@
 package com.sunilos.proj0.ctl;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
-import javax.swing.text.rtf.RTFEditorKit;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
-import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +31,16 @@ import com.sunilos.proj0.form.UserForm;
 import com.sunilos.proj0.form.UserListForm;
 import com.sunilos.proj0.service.RoleServiceInt;
 import com.sunilos.proj0.service.UserServiceInt;
+import com.sunilos.proj0.util.DataValidator;
+import com.sunilos.proj0.util.Util;
+
+/**
+ * Contains navigation logics for User and User List usecases.
+ * 
+ * @author Business Delegate
+ * @version 1.0
+ * @Copyright (c) SunilOS
+ */
 
 @Controller
 @RequestMapping(value = "/ctl/User")
@@ -40,82 +52,89 @@ public class UserCtl extends BaseCtl {
 	private UserServiceInt service;
 
 	@Autowired
-	private RoleServiceInt roleservice;
+	private RoleServiceInt roleService;
+
+	@Autowired
+	private DataValidator dataValidator;
 
 	@Autowired
 	MessageSource messageSource;
 
 	@Override
 	public void preload(Model model) {
-		try {
-			List list = roleservice.list();
-			for (int i = 0; i < list.size(); i++) {
-				System.out.println(list.get(i).toString());
-			}
-
-			model.addAttribute("roleList", list);
-		} catch (ApplicationException e) {
-
-			e.printStackTrace();
-		}
+		List list = roleService.list();
+		model.addAttribute("roleList", list);
 
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String display(@RequestParam(required = false) Long id,
-			@ModelAttribute("form") UserForm form, Model model)
-			throws ApplicationException {
+			@ModelAttribute("form") UserForm form, Model model) {
 		log.debug("UserCtl dispaly method Started");
 		if (id != null && id > 0) {
 			UserDTO dto = service.findByPK(id);
 			form.populate(dto);
 		}
+		log.debug("UserCtl dispaly method End");
 		return "User";
 
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String submit(Locale locale, @RequestParam String operation,
+	public String submit(Locale locale,
+			@RequestParam(required = false) String operation,
 			@ModelAttribute("form") @Valid UserForm form,
 			BindingResult bindingResult, HttpSession session, Model model)
 			throws ApplicationException {
 		log.debug("UserCtl submit started");
-		if (bindingResult.hasErrors()) {
-			return "User";
-		}
-
-		if (OP_SAVE.equals(operation)) {
-			UserDTO dto = (UserDTO) form.getDto();
-			try {
-				System.out.println("form" + form.getRoleId());
-				if (dto.getId() > 0) {
-					service.update(dto);
-					model.addAttribute("success",
-							"User is updated successfully");
-				} else {
-					long pk = service.add(dto);
-					model.addAttribute("success", "User is added successfully");
-					form.setId(pk);
-				}
-			} catch (DuplicateRecordException e) {
-				log.error(e);
-				model.addAttribute("error", "LoginId already Exist");
-				e.printStackTrace();
-			}
-			return "User";
-		} else if (OP_DELETE.equals(operation)) {
-			try {
-				service.delete(form.getId());
-			} catch (Exception e) {
-				log.error(e);
-				e.printStackTrace();
-			}
+		long id1 = form.getDto().getId();
+		if (OP_CANCEL.equals(operation) && (id1 != 0)) {
 			return "redirect:User/search";
 		} else if (OP_CANCEL.equals(operation)) {
-			if (form.getId() > 0) {
-				return "redirect:User";
-			}
+			return "redirect:User";
 		}
+
+		try {
+			if (OP_SAVE.equalsIgnoreCase(operation)) {
+
+				UserDTO dto = (UserDTO) form.getDto();
+				if (form.getDob() != null) {
+					if (!DataValidator.ageLimit(form.getDob())) {
+						bindingResult.rejectValue("dob", "error.dob");
+						return "User";
+					}
+				}
+				if (bindingResult.hasErrors()) {
+					List list = bindingResult.getAllErrors();
+					Iterator it = list.iterator();
+					while (it.hasNext()) {
+						Object ob = it.next();
+					}
+					return "User";
+				}
+
+				if (dto.getId() != 0) {
+					service.update(dto);
+					String msg = messageSource.getMessage("message.update",
+							null, locale);
+					model.addAttribute("success", msg);
+
+				} else {
+					service.add(dto);
+					String msg = messageSource.getMessage("message.success",
+							null, locale);
+					model.addAttribute("success", msg);
+
+				}
+			}
+		} catch (DuplicateRecordException e) {
+			String msg = messageSource.getMessage("register.error", null,
+					locale);
+			model.addAttribute("error", msg);
+			log.error(e);
+
+		}
+
 		return "User";
 
 	}
@@ -125,10 +144,16 @@ public class UserCtl extends BaseCtl {
 			throws ApplicationException {
 		log.debug("searchList method by request  Getmethod started");
 		UserDTO dto = (UserDTO) form.getDto();
-		/*
-		 * int index = ((form.getPageNo() - 1) * form.getPageSize()) + 1;
-		 * model.addAttribute("index", index);
-		 */
+		int i = service.search(dto).size();
+		int size = 0;
+		if (i % 5 == 0) {
+
+			size = i / 5;
+		} else {
+			size = (i / 5) + 1;
+		}
+		model.addAttribute("size", size);
+
 		model.addAttribute("list",
 				service.search(dto, form.getPageNo(), form.getPageSize()));
 		return "UserList";
@@ -137,31 +162,64 @@ public class UserCtl extends BaseCtl {
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public String searchList(Model model,
 			@ModelAttribute("form") UserForm form,
+			@RequestParam(required = false) Integer pageNO,
 			@RequestParam(required = false) String operation, Locale locale)
 			throws ApplicationException {
 		log.debug("In searchList Method");
 
+		// Calculate next page number
 		int pageNo = form.getPageNo();
+		if (pageNO != null && pageNO > 0) {
+			pageNo = pageNO;
 
-		if (OP_NEXT.equals(operation)) {
-			pageNo++;
-		} else if (OP_PREVIOUS.equals(operation)) {
-			pageNo--;
+		}
+		if (OP_SEARCH.equals(operation)) {
+			pageNo = 1;
 		}
 		pageNo = (pageNo < 1) ? 1 : pageNo;
-		form.setPageNo(pageNo);
 
-		if (OP_DELETE.equals(operation) && form.getIds() != null) {
-			for (long id : form.getIds()) {
-				service.delete(id);
+		form.setPageNo(pageNo);
+		try {
+			if (OP_DELETE.equals(operation)) {
+				pageNo = 1;
+				if (form.getIds() != null) {
+					for (long id : form.getIds()) {
+						service.delete(id);
+						String msg = messageSource.getMessage("message.delete",
+								null, locale);
+						model.addAttribute("success", msg);
+					}
+				} else {
+					String msg = messageSource.getMessage(
+							"message.delete.error", null, locale);
+					model.addAttribute("error", msg);
+				}
 			}
+		} catch (Exception e) {
+			return "Error";
 		}
 
+		// Get search attributes
 		UserDTO dto = (UserDTO) form.getDto();
-		List list = service.search(dto, pageNo, form.getPageSize());
-		model.addAttribute("list", list);
-		return "UserList";
 
+		model.addAttribute("list",
+				service.search(dto, pageNo, form.getPageSize()));
+
+		int i = service.search(dto).size();
+		int size = 0;
+		if (i % 5 == 0) {
+			size = i / 5;
+		} else {
+			size = (i / 5) + 1;
+		}
+		if (i == 0) {
+			String msg = messageSource.getMessage("error.notFound", null,
+					locale);
+			model.addAttribute("error", msg);
+		}
+		model.addAttribute("size", size);
+
+		return "UserList";
 	}
 
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
@@ -231,15 +289,8 @@ public class UserCtl extends BaseCtl {
 			BindingResult bindingResult, Model model, HttpSession session)
 			throws DuplicateRecordException, ApplicationException {
 		log.debug("submitChangePassword Started");
-		if (OP_CANCEL.equals(operation)) {
-			return "Welcome";
-		}
 		if (bindingResult.hasErrors()) {
 			return "ChangePassword";
-		}
-
-		if (OP_CANCEL.equals(operation)) {
-			return "MyProfile";
 		}
 
 		if (form.getNewpassword().equals(form.getConfirmpassword())) {
@@ -258,9 +309,11 @@ public class UserCtl extends BaseCtl {
 		} else {
 			model.addAttribute("error",
 					"New password and confirm Password does not match");
+			return "ChangePassword";
 		}
 
 		return "ChangePassword";
 
 	}
+
 }

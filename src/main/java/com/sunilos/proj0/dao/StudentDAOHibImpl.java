@@ -19,7 +19,7 @@ import com.sunilos.proj0.exception.DuplicateRecordException;
 /**
  * Hibernate implementation of Student DAO.
  * 
- * @author SunilOS
+ * @author Business Delegate
  * @version 1.0
  * @Copyright (c) SunilOS
  * 
@@ -46,8 +46,6 @@ public class StudentDAOHibImpl implements StudentDAOInt {
 
 	public void update(StudentDTO dto) throws DataAccessException {
 		log.debug("Student Dao update Started");
-		StudentDTO dtoExist = findByEmailId(dto.getEmail());
-
 		sessionFactory.getCurrentSession().update(dto);
 		log.debug("Student Dao update End");
 
@@ -63,7 +61,7 @@ public class StudentDAOHibImpl implements StudentDAOInt {
 	}
 
 	public StudentDTO findByEmailId(String emailId) throws DataAccessException {
-		log.debug("Student Dao findByName Started");
+		log.debug("Student Dao findByEmailId Started");
 		StudentDTO dto = null;
 		List list = sessionFactory.getCurrentSession()
 				.createCriteria(StudentDTO.class)
@@ -72,7 +70,7 @@ public class StudentDAOHibImpl implements StudentDAOInt {
 			dto = (StudentDTO) list.get(0);
 
 		}
-		log.debug("Student Dao findByName End");
+		log.debug("Student Dao findByEmailId End");
 		return dto;
 
 	}

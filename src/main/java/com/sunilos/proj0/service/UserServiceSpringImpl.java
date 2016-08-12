@@ -7,11 +7,9 @@ import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.swing.text.StyledEditorKit.BoldAction;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -22,8 +20,21 @@ import com.sunilos.proj0.dao.UserDAOInt;
 import com.sunilos.proj0.dto.UserDTO;
 import com.sunilos.proj0.exception.ApplicationException;
 import com.sunilos.proj0.exception.DuplicateRecordException;
-import com.sunilos.proj0.exception.RecordNotFoundException;
 import com.sunilos.proj0.util.EmailBuilder;
+
+/**
+ * Session facade of User Service. It is transactional, apply delcarative
+ * transactions with help of Spring AOP.
+ * 
+ * If unchecked exception is propagated from a method then transaction will be
+ * rolled back.
+ * 
+ * Default propagation value is Propagation.REQUIRED and readOnly = false
+ * 
+ * @author Business Delegate
+ * @version 1.0
+ * @Copyright (c) SunilOS
+ */
 
 @Service(value = "userService")
 public class UserServiceSpringImpl implements UserServiceInt {
@@ -45,8 +56,7 @@ public class UserServiceSpringImpl implements UserServiceInt {
 	private static Logger log = Logger.getLogger(UserServiceSpringImpl.class);
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public long add(UserDTO dto) throws ApplicationException,
-			DuplicateRecordException {
+	public long add(UserDTO dto) throws DuplicateRecordException {
 		UserDTO existDto = dao.findByLogin(dto.getLogin());
 		if (existDto != null) {
 			throw new DuplicateRecordException("Login Id already Exist");
@@ -56,8 +66,7 @@ public class UserServiceSpringImpl implements UserServiceInt {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void update(UserDTO dto) throws ApplicationException,
-			DuplicateRecordException {
+	public void update(UserDTO dto) throws DuplicateRecordException {
 		log.debug("Service update Started");
 		dao.update(dto);
 		log.debug("Service update End");
@@ -65,7 +74,7 @@ public class UserServiceSpringImpl implements UserServiceInt {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void delete(long id) throws ApplicationException {
+	public void delete(long id) {
 		log.debug("Service Delete Started");
 		dao.delete(id);
 		log.debug("Service delete End");
@@ -73,47 +82,48 @@ public class UserServiceSpringImpl implements UserServiceInt {
 	}
 
 	@Transactional(readOnly = true)
-	public UserDTO findByLogin(String login) throws ApplicationException {
+	public UserDTO findByLogin(String login) {
 		log.debug("Service findByLogin Started");
 		UserDTO dto = dao.findByLogin(login);
 		return dto;
 	}
 
 	@Transactional(readOnly = true)
-	public UserDTO findByPK(long pk) throws ApplicationException {
+	public UserDTO findByPK(long pk) {
 		log.debug("Service findByPK Started");
 		UserDTO dto = dao.findByPK(pk);
 		return dto;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public List<UserDTO> search(UserDTO dto) throws ApplicationException {
+	public List<UserDTO> search(UserDTO dto) {
 
 		return dao.search(dto);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public List<UserDTO> search(UserDTO dto, int pageNo, int pageSize)
-			throws ApplicationException {
-
+	public List<UserDTO> search(UserDTO dto, int pageNo, int pageSize) {
 		return dao.search(dto, pageNo, pageSize);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Transactional(readOnly = true)
-	public List list() throws ApplicationException {
+	public List list() {
 
 		return dao.list();
 	}
 
-	public List list(int pageNo, int pageSize) throws ApplicationException {
+	@SuppressWarnings("rawtypes")
+	public List list(int pageNo, int pageSize) {
 
 		return dao.list(pageNo, pageSize);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public boolean changePassword(Long id, String oldPassword,
-			String newPassword) throws RecordNotFoundException,
-			ApplicationException {
+			String newPassword) {
 		boolean flag = false;
 		UserDTO dtoExist = dao.findByPK(id);
 		if (dtoExist != null && dtoExist.getPassword().equals(oldPassword)) {
@@ -153,12 +163,11 @@ public class UserServiceSpringImpl implements UserServiceInt {
 	}
 
 	@Transactional(readOnly = true)
-	public UserDTO authenticate(UserDTO dto) throws ApplicationException,
-			RecordNotFoundException {
+	public UserDTO authenticate(UserDTO dto) {
 		log.debug("User Service authenticate started");
 		UserDTO existDto = dao.authenticate(dto.getLogin(), dto.getPassword());
 		if (existDto == null) {
-			/*throw new RecordNotFoundException("Login Id is Invalid ");*/
+			/* throw new RecordNotFoundException("Login Id is Invalid "); */
 		} else {
 			existDto.setLastLogin(new Timestamp(new Date().getTime()));
 			dao.update(existDto);
@@ -168,91 +177,89 @@ public class UserServiceSpringImpl implements UserServiceInt {
 		return existDto;
 	}
 
-	public boolean lock(String login) throws RecordNotFoundException,
-			ApplicationException {
+	public boolean lock(String login) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public List getRoles(UserDTO dto) throws ApplicationException {
+	public List getRoles(UserDTO dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public UserDTO updateAccess(UserDTO dto) throws ApplicationException,
-			DuplicateRecordException {
+	public UserDTO updateAccess(UserDTO dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public long registerUser(UserDTO dto) throws ApplicationException,
-			DuplicateRecordException {
-		log.debug("User service registerUser Started");
-		long id = add(dto);
+	public long registerUser(UserDTO dto) throws DuplicateRecordException,
+			ApplicationException {
+
+		long id;
+		id = add(dto);
+
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("login", dto.getLogin());
 		map.put("password", dto.getPassword());
 
 		String message = EmailBuilder.getUserRegistrationMessage(map);
+
 		MimeMessage msg = mailSender.createMimeMessage();
 
 		MimeMessageHelper helper = new MimeMessageHelper(msg);
 		try {
 			helper.setTo(dto.getLogin());
-			helper.setSubject("Registration is successfull for ORS Project0 ");
+			helper.setSubject("Registration is successful for ORS Project SUNRAYS Technologies.");
+			// use the true flag to indicate the text included is HTML
 			helper.setText(message, true);
 			mailSender.send(msg);
-		} catch (MessagingException e) {
-			System.out.println("Mail Sending Fail");
-			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new ApplicationException("Error in Register User");
 		}
 
-		log.debug("User service registerUser End");
 		return id;
 	}
 
-	public boolean resetPassword(UserDTO dto) throws ApplicationException {
+	public boolean resetPassword(UserDTO dto) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = false)
-	public boolean forgetPassword(String login) throws ApplicationException,
-			RecordNotFoundException {
-		log.debug("user Service forgetPassword Started");
+	public boolean forgetPassword(String login) throws ApplicationException {
+		log.debug("Service forgetPassword Started");
 
-		UserDTO existDto = dao.findByLogin(login);
-		if (existDto != null) {
+		UserDTO dtoExist = dao.findByLogin(login);
+
+		if (dtoExist != null) {
+
 			HashMap<String, String> map = new HashMap<String, String>();
-			map.put("firstName", existDto.getFirstName());
-			map.put("lastName", existDto.getLastName());
-			map.put("login", existDto.getLogin());
-			map.put("password", existDto.getPassword());
+			map.put("firstName", dtoExist.getFirstName());
+			map.put("lastName", dtoExist.getLastName());
+			map.put("login", dtoExist.getLogin());
+			map.put("password", dtoExist.getPassword());
 
 			String message = EmailBuilder.getForgetPasswordMessage(map);
 
 			MimeMessage msg = mailSender.createMimeMessage();
 
-			MimeMessageHelper helper = new MimeMessageHelper(msg);
 			try {
+				MimeMessageHelper helper = new MimeMessageHelper(msg);
 				helper.setTo(login);
-				helper.setSubject("Please reset ORS Project0 password");
+				helper.setSubject("SunilOS ORS Password reset");
+				// use the true flag to indicate the text included is HTML
 				helper.setText(message, true);
 				mailSender.send(msg);
-
-			} catch (MessagingException e) {
-
-				e.printStackTrace();
+			} catch (Exception e) {
 				log.error(e);
-				return false;
+				throw new ApplicationException("Error in ForgetPassword");
 			}
-
 		} else {
 			return false;
 		}
-
-		log.debug("user Service forgetPassword End");
+		log.debug("Service forgetPassword End");
 		return true;
 	}
 }

@@ -4,6 +4,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+/**
+ * TimeTable POJO class. It is persistent object.
+ * 
+ * @author Business Delegate
+ * @version 1.0
+ * @Copyright (c) SunilOS
+ */
+
 @Entity
 @Table(name = "ST_TIMETABLE")
 public class TimeTableDTO extends BaseDTO {
@@ -19,8 +27,8 @@ public class TimeTableDTO extends BaseDTO {
 	@Column(name = "COURSE_NAME", length = 50)
 	private String courseName;
 
-	@Column(name = "SUBJECT", length = 50)
-	private String subject;
+	@Column(name = "SUBJECT_NAME", length = 50)
+	private String subjectName;
 
 	@Column(name = "DAY", length = 20)
 	private String day;
@@ -60,12 +68,12 @@ public class TimeTableDTO extends BaseDTO {
 		this.courseName = courseName;
 	}
 
-	public String getSubject() {
-		return subject;
+	public String getSubjectName() {
+		return subjectName;
 	}
 
-	public void setSubject(String subject) {
-		this.subject = subject;
+	public void setSubjectName(String subjectName) {
+		this.subjectName = subjectName;
 	}
 
 	public String getDay() {
@@ -82,6 +90,18 @@ public class TimeTableDTO extends BaseDTO {
 
 	public void setTime(String time) {
 		this.time = time;
+	}
+
+	@Override
+	public String getKey() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getValue() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

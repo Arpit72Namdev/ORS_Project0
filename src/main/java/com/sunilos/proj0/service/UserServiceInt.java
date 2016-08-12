@@ -11,7 +11,7 @@ import com.sunilos.proj0.exception.RecordNotFoundException;
 /**
  * User Service interface.
  * 
- * @author SunilOS
+ * @author Business Delegate
  * @version 1.0
  * @Copyright (c) SunilOS
  */
@@ -22,7 +22,7 @@ public interface UserServiceInt {
 	 * Add a user
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
+	 *            * @throws ApplicationException
 	 * @throws DuplicateRecordException
 	 *             : throws when user already exists
 	 */
@@ -33,20 +33,17 @@ public interface UserServiceInt {
 	 * Update a User
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
 	 * @throws DuplicateRecordException
 	 *             : if updated user record is already exist
 	 */
-	public void update(UserDTO dto) throws ApplicationException,
-			DuplicateRecordException;
+	public void update(UserDTO dto) throws DuplicateRecordException;
 
 	/**
 	 * Delete a user
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
 	 */
-	public void delete(long id) throws ApplicationException;
+	public void delete(long id);
 
 	/**
 	 * Find user by login
@@ -54,10 +51,8 @@ public interface UserServiceInt {
 	 * @param login
 	 *            : get parameter
 	 * @return dto
-	 * @throws ApplicationException
-	 * @throws DuplicateRecordException
 	 */
-	public UserDTO findByLogin(String login) throws ApplicationException;
+	public UserDTO findByLogin(String login);
 
 	/**
 	 * Find user by PK
@@ -65,9 +60,8 @@ public interface UserServiceInt {
 	 * @param pk
 	 *            : get parameter
 	 * @return dto
-	 * @throws ApplicationException
 	 */
-	public UserDTO findByPK(long pk) throws ApplicationException;
+	public UserDTO findByPK(long pk);
 
 	/**
 	 * Search Users
@@ -75,9 +69,8 @@ public interface UserServiceInt {
 	 * @return list : List of Users
 	 * @param dto
 	 *            : Search Parameters
-	 * @throws ApplicationException
 	 */
-	public List search(UserDTO dto) throws ApplicationException;
+	public List search(UserDTO dto);
 
 	/**
 	 * Search Users with pagination
@@ -89,18 +82,15 @@ public interface UserServiceInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
-	 * @throws ApplicationException
 	 */
-	public List search(UserDTO dto, int pageNo, int pageSize)
-			throws ApplicationException;
+	public List search(UserDTO dto, int pageNo, int pageSize);
 
 	/**
 	 * Get List of Users
 	 * 
 	 * @return list : List of Users
-	 * @throws DatabaseException
 	 */
-	public List list() throws ApplicationException;
+	public List list();
 
 	/**
 	 * Get List of Users with pagination
@@ -110,9 +100,8 @@ public interface UserServiceInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
-	 * @throws ApplicationException
 	 */
-	public List list(int pageNo, int pageSize) throws ApplicationException;
+	public List list(int pageNo, int pageSize);
 
 	/**
 	 * Change Password By pk
@@ -121,11 +110,9 @@ public interface UserServiceInt {
 	 *            ,oldPassword,newPassword : get parameter
 	 * @return dto
 	 * @throws ApplicationException
-	 * @throws RecordNotFoundException
 	 */
 	public boolean changePassword(Long id, String oldPassword,
-			String newPassword) throws RecordNotFoundException,
-			ApplicationException;
+			String newPassword) throws ApplicationException;
 
 	/**
 	 * User Authentication
@@ -135,10 +122,8 @@ public interface UserServiceInt {
 	 *            : User Login
 	 * @param password
 	 *            : User Password
-	 * @throws ApplicationException
-	 * @throws RecordNotFoundException
 	 */
-	public UserDTO authenticate(UserDTO dto) throws ApplicationException, RecordNotFoundException;
+	public UserDTO authenticate(UserDTO dto);
 
 	/**
 	 * Lock User for certain time duration
@@ -146,31 +131,24 @@ public interface UserServiceInt {
 	 * @return boolean : true if success otherwise false
 	 * @param login
 	 *            : User Login
-	 * @throws ApplicationException
-	 * @throws RecordNotFoundException
-	 *             : if user not found
 	 */
-	public boolean lock(String login) throws RecordNotFoundException,
-			ApplicationException;
+	public boolean lock(String login);
 
 	/**
 	 * Get User Roles
 	 * 
 	 * @return List : User Role List
 	 * @param dto
-	 * @throws ApplicationException
 	 */
-	public List getRoles(UserDTO dto) throws ApplicationException;
+	public List getRoles(UserDTO dto);
 
 	/**
 	 * Update User access
 	 * 
 	 * @return dto
 	 * @param dto
-	 * @throws ApplicationException
 	 */
-	public UserDTO updateAccess(UserDTO dto) throws ApplicationException,
-			DuplicateRecordException;
+	public UserDTO updateAccess(UserDTO dto);
 
 	/**
 	 * Register a User
@@ -178,20 +156,17 @@ public interface UserServiceInt {
 	 * @param dto
 	 * @return
 	 * @throws ApplicationException
-	 * @throws DuplicateRecordException
+	 * @throws DuplicateRecordException 
 	 */
-	public long registerUser(com.sunilos.proj0.dto.UserDTO dto)
-			throws ApplicationException, DuplicateRecordException;
+	public long registerUser(UserDTO dto) throws ApplicationException, DuplicateRecordException;
 
 	/**
 	 * reset password
 	 */
-	public boolean resetPassword(UserDTO dto) throws ApplicationException;
+	public boolean resetPassword(UserDTO dto);
 
 	/**
-	 * forget password
+	 * forget password * @throws ApplicationException
 	 */
-	public boolean forgetPassword(String login) throws ApplicationException,
-			RecordNotFoundException;
-
+	public boolean forgetPassword(String login) throws ApplicationException;
 }

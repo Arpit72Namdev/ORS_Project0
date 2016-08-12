@@ -12,33 +12,28 @@ public interface CourseServiceInt {
 	/**
 	 * Course Service interface.
 	 * 
-	 * @author SunilOS
+	 * @author Business Delegate
 	 * @version 1.0
 	 * @Copyright (c) SunilOS
 	 */
 
-	public long add(CourseDTO dto) throws ApplicationException,
-			DuplicateRecordException;
+	public long add(CourseDTO dto) throws DuplicateRecordException;
 
 	/**
 	 * Update a Course
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
 	 * @throws DuplicateRecordException
 	 *             : if updated user record is already exist
-	 * @throws RecordNotFoundException
 	 */
-	public void update(CourseDTO dto) throws ApplicationException,
-			DuplicateRecordException, RecordNotFoundException;
+	public void update(CourseDTO dto) throws DuplicateRecordException;
 
 	/**
 	 * Delete a Course
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
 	 */
-	public void delete(long id) throws ApplicationException;
+	public void delete(long id);
 
 	/**
 	 * Find Course by Name
@@ -46,10 +41,8 @@ public interface CourseServiceInt {
 	 * @param name
 	 *            : get parameter
 	 * @return dto
-	 * @throws ApplicationException
 	 */
-	public CourseDTO findByName(String name, String sub)
-			throws ApplicationException;
+	public CourseDTO findByName(String name, String sub);
 
 	/**
 	 * Find Course by PK
@@ -57,9 +50,8 @@ public interface CourseServiceInt {
 	 * @param pk
 	 *            : get parameter
 	 * @return dto
-	 * @throws ApplicationException
 	 */
-	public CourseDTO findByPK(long pk) throws ApplicationException;
+	public CourseDTO findByPK(long pk);
 
 	/**
 	 * Search Course with pagination
@@ -71,10 +63,8 @@ public interface CourseServiceInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
-	 * @throws ApplicationException
 	 */
-	public List search(CourseDTO dto, int pageNo, int pageSize)
-			throws ApplicationException;
+	public List search(CourseDTO dto, int pageNo, int pageSize);
 
 	/**
 	 * Search Course
@@ -82,17 +72,15 @@ public interface CourseServiceInt {
 	 * @return list : List of Course
 	 * @param dto
 	 *            : Search Parameters
-	 * @throws ApplicationException
 	 */
-	public List search(CourseDTO dto) throws ApplicationException;
+	public List search(CourseDTO dto);
 
 	/**
 	 * Gets List of Course
 	 * 
 	 * @return list : List of Course
-	 * @throws DatabaseException
 	 */
-	public List list() throws ApplicationException;
+	public List list();
 
 	/**
 	 * get List of Course with pagination
@@ -102,8 +90,7 @@ public interface CourseServiceInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
-	 * @throws ApplicationException
 	 */
-	public List list(int pageNo, int pageSize) throws ApplicationException;
+	public List list(int pageNo, int pageSize);
 
 }

@@ -14,7 +14,7 @@ import javax.persistence.Table;
  * @Copyright (c) SunilOS
  */
 @Entity
-@Table(name = "STUDENT")
+@Table(name = "ST_STUDENT")
 public class StudentDTO extends BaseDTO {
 	/**
 	 * First Name of Student
@@ -124,7 +124,7 @@ public class StudentDTO extends BaseDTO {
 	@Override
 	public String getValue() {
 
-		return firstName + " " + lastName;
+		return firstName + " " + lastName + "-" + email;
 	}
 
 }

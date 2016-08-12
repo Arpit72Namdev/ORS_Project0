@@ -13,7 +13,10 @@
 		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
 		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
-	<!--Enables MVC annotations like @Valide, @RequestMapping etc. -->
+
+
+
+	<!--Enables MVC annptations like @Valid, @RequestMapping etc. -->
 	<mvc:annotation-driven validator="validator" />
 
 	<!--Scan @Repository, @Service, @Component and @Controller spring beans -->
@@ -21,7 +24,10 @@
 
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 
+	<mvc:default-servlet-handler />
 	<!--Tiles configuration start -->
+
+	<!-- Configure Tiles -->
 	<bean id="tilesConfigurer"
 		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
 		<property name="definitions">
@@ -31,26 +37,53 @@
 		</property>
 	</bean>
 
-
-
-
-	<bean id="viewResolver"
+	<!-- Tiles View resolver will be called in Order 1 after calling InternalResourceViewResolver -->
+	<bean id="tilesViewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 		<property name="viewClass">
 			<value>
 				org.springframework.web.servlet.view.tiles2.TilesView
 			</value>
 		</property>
+		<property name="order" value="0" />
+	</bean>
 
+	<!-- Resolves view names based on the names declared on the declared xml 
+		locationAll our Jasper views are declared inside the specified xml location.Take 
+		note of the ordering of this ViewResolver. -->
+	<bean class="org.springframework.web.servlet.view.XmlViewResolver"
+		p:location="/WEB-INF/jasper-views.xml">
+		<property name="order" value="1" />
+	</bean>
+
+	<!-- <import resource="jasper-views.xml" /> -->
+	<!-- View Resolvers -->
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/pages/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+		<property name="order" value="2" />
 	</bean>
 	<!--Tiles configuration End -->
 
+
+
+
 	<!-- Apply Front Controller -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/ctl/**/*" />
 
-	<!-- <mvc:interceptors> <mvc:interceptor> <mvc:mapping path="/ctl/**/*" 
-		/> <bean class="com.sunilos.proj0.ctl.FrontCtl" /> </mvc:interceptor> </mvc:interceptors> -->
+			<bean class="com.sunilos.proj0.ctl.FrontCtl">
 
-
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
 	<!-- i18n Start -->
 	<!-- Defines the message resources -->
 	<bean id="messageSource"
@@ -69,6 +102,7 @@
 		<bean id="localeChangeInterceptor"
 			class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
 			<property name="paramName" value="lang" />
+
 		</bean>
 	</mvc:interceptors>
 
@@ -80,10 +114,6 @@
 
 	<!-- i18n End -->
 
-
-
-
-
 	<!-- Database Configuration -->
 	<import resource="hibernate-servlet.xml" />
 
@@ -94,8 +124,8 @@
 		<property name="port" value="587" />
 		<property name="protocol" value="smtp" />
 
-		<property name="username" value="sedhav@gmail.com" />
-		<property name="password" value="sendhav" />
+		<property name="username" value="webmaster@sunrays.co.in" />
+		<property name="password" value="PA$$1234" />
 
 		<property name="javaMailProperties">
 			<props>
@@ -109,4 +139,3 @@
 
 	<context:annotation-config></context:annotation-config>
 </beans>
-

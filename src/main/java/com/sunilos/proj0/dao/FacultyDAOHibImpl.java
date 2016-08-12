@@ -14,8 +14,14 @@ import org.springframework.stereotype.Repository;
 import com.sunilos.proj0.dto.CollegeDTO;
 import com.sunilos.proj0.dto.FacultyDTO;
 import com.sunilos.proj0.dto.UserDTO;
-import com.sunilos.proj0.exception.ApplicationException;
-import com.sunilos.proj0.exception.DuplicateRecordException;
+
+/**
+ * Hibernate implementation of Faculty DAO.
+ * 
+ * @author Business Delegate
+ * @version 1.0
+ * @Copyright (c) SunilOS
+ */
 
 @Repository("facultyDAO")
 public class FacultyDAOHibImpl implements FacultyDAOInt {
@@ -29,48 +35,20 @@ public class FacultyDAOHibImpl implements FacultyDAOInt {
 		this.sessionFactory = sessionFactory;
 	}
 
-	
-	public long add(FacultyDTO dto) {
+	public long add(FacultyDTO dto) throws DataAccessException {
 		log.debug("Faculty Dao Add started");
-		CollegeDAOHibImpl cmodel = new CollegeDAOHibImpl();
-		CollegeDTO colDto = cmodel.findByPK(dto.getCollegeId());
-		dto.setCollegeName(colDto.getName());
-
-		// get Faculty Name
-		UserDAOHibImpl umodel = new UserDAOHibImpl();
-		UserDTO userDto = umodel.findByPK(dto.getUserId());
-		dto.setFacultyName(userDto.getFirstName() + " " + userDto.getLastName());
-
 		long pk = (Long) sessionFactory.getCurrentSession().save(dto);
 		log.debug("Faculty Dao Add End");
 		return pk;
 
 	}
 
-	
 	public void update(FacultyDTO dto) throws DataAccessException {
 		log.debug("Faculty Dao Add started");
-		CollegeDAOHibImpl cmodel = new CollegeDAOHibImpl();
-		CollegeDTO colDto = cmodel.findByPK(dto.getCollegeId());
-		dto.setCollegeName(colDto.getName());
-
-		// get Faculty Name
-		UserDAOHibImpl umodel = new UserDAOHibImpl();
-		UserDTO userDto = umodel.findByPK(dto.getUserId());
-		dto.setFacultyName(userDto.getFirstName() + " " + userDto.getLastName());
-
-		/*
-		 * FacultyDTO duplicataFaculty = findByUserId(dto.getUserId());
-		 * 
-		 * // Check if updated Faculty already exist if (duplicataFaculty ==
-		 * null) { throw new
-		 * DuplicateRecordException("Faculty does not exists"); }
-		 */
 		sessionFactory.getCurrentSession().update(dto);
 		log.debug("Faculty Dao update started");
 	}
 
-	
 	public void delete(long id) throws DataAccessException {
 		log.debug("Faculty Dao delete started");
 		FacultyDTO dto = new FacultyDTO();
@@ -80,7 +58,6 @@ public class FacultyDAOHibImpl implements FacultyDAOInt {
 
 	}
 
-	
 	public FacultyDTO findByUserId(Long uId) throws DataAccessException {
 		log.debug("Faculty Dao findByUserId Started");
 		FacultyDTO dto = null;
@@ -95,7 +72,6 @@ public class FacultyDAOHibImpl implements FacultyDAOInt {
 
 	}
 
-	
 	public FacultyDTO findByPK(long pk) throws DataAccessException {
 		log.debug("Faculty Dao findBypk Started");
 		Session session = sessionFactory.getCurrentSession();
@@ -106,7 +82,6 @@ public class FacultyDAOHibImpl implements FacultyDAOInt {
 
 	}
 
-	
 	public List search(FacultyDTO dto, int pageNo, int pageSize)
 			throws DataAccessException {
 		log.debug("Faculty Dao search Started");
@@ -137,19 +112,16 @@ public class FacultyDAOHibImpl implements FacultyDAOInt {
 		return criteria.list();
 	}
 
-	
 	public List search(FacultyDTO dto) throws DataAccessException {
 
 		return search(dto, 0, 0);
 	}
 
-	
 	public List list() throws DataAccessException {
 
 		return list(0, 0);
 	}
 
-	
 	public List list(int pageNo, int pageSize) throws DataAccessException {
 		log.debug("Faculty Dao list Started");
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(

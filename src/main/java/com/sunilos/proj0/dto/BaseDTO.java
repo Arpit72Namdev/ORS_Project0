@@ -13,12 +13,13 @@ import org.hibernate.annotations.GenericGenerator;
 /**
  * Base class extended by all DTOs.
  * 
- * @author SunilOS
+ * @author Business Delegate
  * @version 1.0
  * @Copyright (c) SunilOS
  */
 @MappedSuperclass
-public class BaseDTO implements Serializable, Comparable<BaseDTO>, DropdownList {
+public abstract class BaseDTO implements Serializable, Comparable<BaseDTO>,
+		DropdownList {
 
 	/**
 	 * Non Business primary key
@@ -58,11 +59,6 @@ public class BaseDTO implements Serializable, Comparable<BaseDTO>, DropdownList 
 	 * accessor
 	 */
 
-	public String getKey() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public long getId() {
 		return id;
 	}
@@ -101,11 +97,6 @@ public class BaseDTO implements Serializable, Comparable<BaseDTO>, DropdownList 
 
 	public void setModifiedDatetime(Timestamp modifiedDatetime) {
 		this.modifiedDatetime = modifiedDatetime;
-	}
-
-	public String getValue() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public int compareTo(BaseDTO next) {

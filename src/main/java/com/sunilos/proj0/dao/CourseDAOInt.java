@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 
 import com.sunilos.proj0.dto.CourseDTO;
-import com.sunilos.proj0.exception.*;
 
 /**
  * Course DAO interface.
@@ -20,20 +19,15 @@ public interface CourseDAOInt {
 	 * Add a Course
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
-	 * @throws DuplicateRecordException
-	 *             : throws when Course already exists
+	 * @throws DataAccessException
 	 */
-	public long add(CourseDTO dto) throws ApplicationException,
-			DuplicateRecordException;
+	public long add(CourseDTO dto) throws DataAccessException;
 
 	/**
 	 * Update a Course
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
-	 * @throws DuplicateRecordException
-	 *             : if updated user record is already exist
+	 * @throws DataAccessException
 	 */
 	public void update(CourseDTO dto) throws DataAccessException;
 
@@ -41,7 +35,7 @@ public interface CourseDAOInt {
 	 * Delete a Course
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
+	 * @throws DataAccessException
 	 */
 	public void delete(long id) throws DataAccessException;
 
@@ -51,9 +45,9 @@ public interface CourseDAOInt {
 	 * @param name
 	 *            : get parameter
 	 * @return dto
-	 * @throws ApplicationException
+	 * @throws DataAccessException
 	 */
-	public CourseDTO findByName(String name, String sub)
+	public CourseDTO findByName(String name)
 			throws DataAccessException;
 
 	/**
@@ -62,7 +56,7 @@ public interface CourseDAOInt {
 	 * @param pk
 	 *            : get parameter
 	 * @return dto
-	 * @throws ApplicationException
+	 * @throws DataAccessException
 	 */
 	public CourseDTO findByPK(long pk) throws DataAccessException;
 
@@ -76,7 +70,7 @@ public interface CourseDAOInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
-	 * @throws ApplicationException
+	 * @throws DataAccessException
 	 */
 	public List search(CourseDTO dto, int pageNo, int pageSize)
 			throws DataAccessException;
@@ -87,7 +81,7 @@ public interface CourseDAOInt {
 	 * @return list : List of Course
 	 * @param dto
 	 *            : Search Parameters
-	 * @throws ApplicationException
+	 * @throws DataAccessException
 	 */
 	public List search(CourseDTO dto) throws DataAccessException;
 
@@ -95,7 +89,7 @@ public interface CourseDAOInt {
 	 * Gets List of Course
 	 * 
 	 * @return list : List of Course
-	 * @throws DatabaseException
+	 * @throws DataAccessException
 	 */
 	public List list() throws DataAccessException;
 
@@ -107,8 +101,8 @@ public interface CourseDAOInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
-	 * @throws ApplicationException
+	 * @throws DataAccessException
 	 */
-	public List list(int pageNo, int pageSize) throws ApplicationException;
+	public List list(int pageNo, int pageSize) throws DataAccessException;
 
 }

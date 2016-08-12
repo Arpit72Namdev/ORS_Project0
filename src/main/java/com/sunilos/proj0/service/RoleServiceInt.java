@@ -11,7 +11,7 @@ import com.sunilos.proj0.exception.DuplicateRecordException;
  * 
  * Role Service interface.
  * 
- * @author SunilOS
+ * @author Business Delegate
  * @version 1.0
  * @Copyright (c) SunilOS
  */
@@ -22,31 +22,26 @@ public interface RoleServiceInt {
 	 * Add a Role
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
 	 * @throws DuplicateRecordException
 	 *             : throws when Role already exists
 	 */
-	public long add(RoleDTO dto) throws ApplicationException,
-			DuplicateRecordException;
+	public long add(RoleDTO dto) throws DuplicateRecordException;
 
 	/**
 	 * Update a Role
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
 	 * @throws DuplicateRecordException
 	 *             : if updated user record is already exist
 	 */
-	public void update(RoleDTO dto) throws ApplicationException,
-			DuplicateRecordException;
+	public void update(RoleDTO dto) throws DuplicateRecordException;
 
 	/**
 	 * Delete a Role
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
 	 */
-	public void delete(long id) throws ApplicationException;
+	public void delete(long id);
 
 	/**
 	 * Find Role by Name
@@ -54,9 +49,8 @@ public interface RoleServiceInt {
 	 * @param name
 	 *            : get parameter
 	 * @return dto
-	 * @throws ApplicationException
 	 */
-	public RoleDTO findByName(String name) throws ApplicationException;
+	public RoleDTO findByName(String name);
 
 	/**
 	 * Find Role by PK
@@ -64,9 +58,8 @@ public interface RoleServiceInt {
 	 * @param pk
 	 *            : get parameter
 	 * @return dto
-	 * @throws ApplicationException
 	 */
-	public RoleDTO findByPK(long pk) throws ApplicationException;
+	public RoleDTO findByPK(long pk);
 
 	/**
 	 * Search Role with pagination
@@ -78,10 +71,8 @@ public interface RoleServiceInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
-	 * @throws ApplicationException
 	 */
-	public List search(RoleDTO dto, int pageNo, int pageSize)
-			throws ApplicationException;
+	public List search(RoleDTO dto, int pageNo, int pageSize);
 
 	/**
 	 * Search Role
@@ -89,17 +80,15 @@ public interface RoleServiceInt {
 	 * @return list : List of Role
 	 * @param dto
 	 *            : Search Parameters
-	 * @throws ApplicationException
 	 */
-	public List search(RoleDTO dto) throws ApplicationException;
+	public List search(RoleDTO dto);
 
 	/**
 	 * Gets List of Role
 	 * 
 	 * @return list : List of Role
-	 * @throws DatabaseException
 	 */
-	public List list() throws ApplicationException;
+	public List list();
 
 	/**
 	 * get List of Role with pagination
@@ -109,8 +98,7 @@ public interface RoleServiceInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
-	 * @throws ApplicationException
 	 */
-	public List list(int pageNo, int pageSize) throws ApplicationException;
+	public List list(int pageNo, int pageSize);
 
 }

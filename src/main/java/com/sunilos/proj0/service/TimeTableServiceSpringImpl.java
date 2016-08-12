@@ -13,6 +13,20 @@ import com.sunilos.proj0.dto.TimeTableDTO;
 import com.sunilos.proj0.exception.ApplicationException;
 import com.sunilos.proj0.exception.DuplicateRecordException;
 
+/**
+ * Session facade of TimeTable Service. It is transactional, apply delcarative
+ * transactions with help of Spring AOP.
+ * 
+ * If unchecked exception is propagated from a method then transaction will be
+ * rolled back.
+ * 
+ * Default propagation value is Propagation.REQUIRED and readOnly = false
+ * 
+ * @author Business Delegate
+ * @version 1.0
+ * @Copyright (c) SunilOS
+ */
+
 @Service(value = "timetableService")
 public class TimeTableServiceSpringImpl implements TimeTableServiceInt {
 
@@ -27,66 +41,59 @@ public class TimeTableServiceSpringImpl implements TimeTableServiceInt {
 			.getLogger(TimeTableServiceSpringImpl.class);
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public long add(TimeTableDTO dto) throws ApplicationException,
-			DuplicateRecordException {
+	public long add(TimeTableDTO dto) throws DuplicateRecordException {
 		TimeTableDTO existDto = dao.findByName(dto.getUserId(), dto.getTime());
 		if (existDto != null) {
-			throw new DuplicateRecordException("Subject Name already Exist");
+			throw new DuplicateRecordException(
+					"Faculty is already scheduled for selected time");
 		}
 		long pk = dao.add(dto);
 		return pk;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void update(TimeTableDTO dto) throws ApplicationException,
-			DuplicateRecordException {
-		TimeTableDTO existDto = dao.findByName(dto.getUserId(), dto.getTime());
-		if (existDto != null && existDto.getId() != dto.getId()) {
-			throw new DuplicateRecordException("Time Table does not exist");
-		}
+	public void update(TimeTableDTO dto) throws DuplicateRecordException {
 		dao.update(dto);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void delete(long id) throws ApplicationException {
+	public void delete(long id) {
 		dao.delete(id);
 
 	}
 
 	@Transactional(readOnly = true)
-	public TimeTableDTO findByName(Long fid, String name)
-			throws ApplicationException {
+	public TimeTableDTO findByName(Long fid, String name) {
 
 		return dao.findByName(fid, name);
 	}
 
 	@Transactional(readOnly = true)
-	public TimeTableDTO findByPK(long pk) throws ApplicationException {
+	public TimeTableDTO findByPK(long pk) {
 
 		return dao.findByPK(pk);
 	}
 
 	@Transactional(readOnly = true)
-	public List search(TimeTableDTO dto, int pageNo, int pageSize)
-			throws ApplicationException {
+	public List search(TimeTableDTO dto, int pageNo, int pageSize) {
 
 		return dao.search(dto, pageNo, pageSize);
 	}
 
 	@Transactional(readOnly = true)
-	public List search(TimeTableDTO dto) throws ApplicationException {
+	public List search(TimeTableDTO dto) {
 
 		return dao.search(dto);
 	}
 
 	@Transactional(readOnly = true)
-	public List list() throws ApplicationException {
+	public List list() {
 
 		return dao.list();
 	}
 
 	@Transactional(readOnly = true)
-	public List list(int pageNo, int pageSize) throws ApplicationException {
+	public List list(int pageNo, int pageSize) {
 
 		return dao.list(pageNo, pageSize);
 	}

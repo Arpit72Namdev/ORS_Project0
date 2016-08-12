@@ -9,6 +9,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.sunilos.proj0.dto.BaseDTO;
 import com.sunilos.proj0.dto.UserDTO;
@@ -24,40 +26,36 @@ import com.sunilos.proj0.util.Util;
  */
 
 public class UserForm extends BaseForm {
+
 	@NotEmpty
-	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "First Name not contain Space")
+	@Pattern(regexp = "[a-zA-Z]*$", message = "{Pattern.form.firstName}")
 	private String firstName;
 
 	@NotEmpty
-	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Last name not contain space")
+	@Pattern(regexp = "[a-zA-Z]*$", message = "{Pattern.form.lastName}")
 	private String lastName;
 
 	@NotEmpty
 	@Email
 	private String login;
 
-	@NotEmpty
-	@Size(max = 10, min = 5)
+	
+	@Size(min = 6, max = 10)
 	private String password;
 
 	@NotEmpty
 	private String gender;
 
-	protected long roleId;
+	@NotNull
+	private Long roleId;
+
+	@NotNull
+	@DateTimeFormat(pattern = "MM/dd/yyyy")
+	private Date dob;
 
 	@NotEmpty
-	private String dob;
-
-	@NotEmpty
+	@Pattern(regexp = "([7-9]{1}[0-9]{9})*$", message = "{Pattern.form.mobileNo}")
 	private String mobileNo;
-
-	public String getMobileNo() {
-		return mobileNo;
-	}
-
-	public void setMobileNo(String mobileNo) {
-		this.mobileNo = mobileNo;
-	}
 
 	private long lastLogin;
 
@@ -67,14 +65,30 @@ public class UserForm extends BaseForm {
 
 	private String lastLoginIP;
 
-	private long[] Ids;
+	private Long[] Ids;
 
-	public long[] getIds() {
+	public Long[] getIds() {
 		return Ids;
 	}
 
-	public void setIds(long[] ids) {
+	public void setIds(Long[] ids) {
 		Ids = ids;
+	}
+
+	public long getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(long lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
 	}
 
 	public String getFirstName() {
@@ -117,28 +131,20 @@ public class UserForm extends BaseForm {
 		this.gender = gender;
 	}
 
-	public long getRoleId() {
+	public Long getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(long roleId) {
+	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
 	}
 
-	public String getDob() {
+	public Date getDob() {
 		return dob;
 	}
 
-	public void setDob(String dob) {
+	public void setDob(Date dob) {
 		this.dob = dob;
-	}
-
-	public long getLastLogin() {
-		return lastLogin;
-	}
-
-	public void setLastLogin(long lastLogin) {
-		this.lastLogin = lastLogin;
 	}
 
 	public String getLock() {
@@ -176,7 +182,7 @@ public class UserForm extends BaseForm {
 		dto.setGender(gender);
 		dto.setRoleId(roleId);
 		dto.setMobileNo(mobileNo);
-		dto.setDob(Util.getDate(dob));
+		dto.setDob(dob);
 		dto.setLastLogin(new Timestamp(lastLogin));
 		dto.setRegisteredIP(registeredIP);
 		dto.setCreatedBy(createdBy);
@@ -196,9 +202,10 @@ public class UserForm extends BaseForm {
 		lastName = dto.getLastName();
 		login = dto.getLogin();
 		password = dto.getPassword();
-		dob = Util.getDate(dto.getDob());
+		dob = dto.getDob();
 		mobileNo = dto.getMobileNo();
 		roleId = dto.getRoleId();
+
 		if (dto.getLastLogin() != null) {
 			lastLogin = dto.getLastLogin().getTime();
 		}

@@ -11,11 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
-import com.sunilos.proj0.dto.CollegeDTO;
 import com.sunilos.proj0.dto.CourseDTO;
-import com.sunilos.proj0.dto.TimeTableDTO;
-import com.sunilos.proj0.exception.ApplicationException;
-import com.sunilos.proj0.exception.DuplicateRecordException;
+
+/**
+ * Hibernate implementation of Course DAO.
+ * 
+ * @author Business Delegate
+ * @version 1.0
+ * @Copyright (c) SunilOS
+ */
 
 @Repository("courseDAO")
 public class CourseDAOHibImpl implements CourseDAOInt {
@@ -31,7 +35,6 @@ public class CourseDAOHibImpl implements CourseDAOInt {
 
 	public long add(CourseDTO dto) throws DataAccessException {
 		log.debug("Course Dao Add Started");
-
 		long pk = (Long) sessionFactory.getCurrentSession().save(dto);
 		log.debug("Course Dao Add End");
 		return pk;
@@ -53,14 +56,13 @@ public class CourseDAOHibImpl implements CourseDAOInt {
 
 	}
 
-	public CourseDTO findByName(String name, String sub)
+	public CourseDTO findByName(String name)
 			throws DataAccessException {
 		log.debug("Course Dao findByName Started");
 		CourseDTO dto = null;
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
 				CourseDTO.class);
 		criteria.add(Restrictions.eq("courseName", name));
-		criteria.add(Restrictions.eq("subject", sub));
 
 		List list = criteria.list();
 
@@ -76,7 +78,6 @@ public class CourseDAOHibImpl implements CourseDAOInt {
 		log.debug("Course Dao findBypk Started");
 		Session session = sessionFactory.getCurrentSession();
 		CourseDTO dto = (CourseDTO) session.get(CourseDTO.class, pk);
-		session.evict(dto);
 		log.debug("Course Dao findBypk End");
 		return dto;
 	}
@@ -95,10 +96,7 @@ public class CourseDAOHibImpl implements CourseDAOInt {
 				criteria.add(Restrictions.like("courseName",
 						dto.getCourseName() + "%"));
 			}
-			if (dto.getSubject() != null && dto.getSubject().length() > 0) {
-				criteria.add(Restrictions.like("subject", dto.getSubject()
-						+ "%"));
-			}
+		
 		}// if page size is greater than zero the apply pagination
 		if (pageSize > 0) {
 			criteria.setFirstResult(((pageNo - 1) * pageSize));
@@ -132,5 +130,6 @@ public class CourseDAOHibImpl implements CourseDAOInt {
 		log.debug("Course Dao list End");
 		return list;
 	}
+
 
 }

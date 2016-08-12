@@ -1,5 +1,6 @@
 package com.sunilos.proj0.ctl;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -8,6 +9,7 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,15 +18,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.sunilos.proj0.dto.CollegeDTO;
 import com.sunilos.proj0.dto.FacultyDTO;
-import com.sunilos.proj0.dto.RoleDTO;
 import com.sunilos.proj0.dto.UserDTO;
-import com.sunilos.proj0.exception.ApplicationException;
 import com.sunilos.proj0.exception.DuplicateRecordException;
 import com.sunilos.proj0.form.FacultyForm;
 import com.sunilos.proj0.service.CollegeServiceInt;
 import com.sunilos.proj0.service.FacultyServiceInt;
 import com.sunilos.proj0.service.UserServiceInt;
+
+/**
+ * Contains navigation logics for Faculty and Faculty List usecases.
+ * 
+ * @author Business Delegate
+ * @version 1.0
+ * @Copyright (c) SunilOS
+ */
 
 @Controller
 @RequestMapping(value = "/ctl/Faculty")
@@ -36,7 +45,7 @@ public class FacultyCtl extends BaseCtl {
 	private FacultyServiceInt service;
 
 	@Autowired
-	private CollegeServiceInt colService;
+	private CollegeServiceInt collegeService;
 
 	@Autowired
 	private UserServiceInt userService;
@@ -47,31 +56,18 @@ public class FacultyCtl extends BaseCtl {
 	@Override
 	public void preload(Model model) {
 
-		try {
-			List colList = colService.list();
-			model.addAttribute("colList", colList);
-		} catch (ApplicationException e) {
+		List facultyList;
+		facultyList = userService.list();
+		model.addAttribute("facultyList", facultyList);
 
-			e.printStackTrace();
-		}
-
-		try {
-			RoleDTO rolDto = new RoleDTO();
-			UserDTO dto = new UserDTO();
-			dto.setRoleId(rolDto.FACULTY);
-			List userList = userService.search(dto);
-			model.addAttribute("userList", userList);
-		} catch (ApplicationException e) {
-
-			e.printStackTrace();
-		}
-		super.preload(model);
+		List collegeList;
+		collegeList = collegeService.list();
+		model.addAttribute("collegeList", collegeList);
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String display(@RequestParam(required = false) Long id,
-			@ModelAttribute("form") FacultyForm form, Model model)
-			throws ApplicationException {
+			@ModelAttribute("form") FacultyForm form, Model model) {
 		log.debug("FacultyCtl display method started");
 		if (id != null && id > 0) {
 			FacultyDTO dto = service.findByPK(id);
@@ -88,82 +84,136 @@ public class FacultyCtl extends BaseCtl {
 			BindingResult bindingResult, Model model) {
 		log.debug("FacultyCtl submit method started");
 
-		if (bindingResult.hasErrors()) {
-			return "Faculty";
-		}
-		if (OP_CANCEL.equalsIgnoreCase(operation)) {
+		long id1 = form.getDto().getId();
+		if (OP_CANCEL.equals(operation) && (id1 != 0)) {
+			return "redirect:Faculty/search";
+		} else if (OP_CANCEL.equals(operation)) {
 			return "redirect:Faculty";
 		}
-
-		if (OP_SAVE.equalsIgnoreCase(operation)) {
-			FacultyDTO dto = (FacultyDTO) form.getDto();
-
-			try {
-				if (dto.getId() > 0) {
-					service.update(dto);
-					model.addAttribute("success",
-							"Faculty updated successfully");
-				} else {
-					service.add(dto);
-					String msg = messageSource.getMessage("label.success",
-							null, locale);
-					model.addAttribute("success", msg);
-				}
-			} catch (Exception e) {
-				model.addAttribute("error", "Faculty already Exits");
-				e.printStackTrace();
+		if (bindingResult.hasErrors()) {
+			List list = bindingResult.getAllErrors();
+			Iterator it = list.iterator();
+			while (it.hasNext()) {
+				Object ob = it.next();
 			}
 			return "Faculty";
-		} else if (OP_DELETE.equalsIgnoreCase(operation)) {
-			try {
-				service.delete(form.getId());
-			} catch (ApplicationException e) {
-
-				e.printStackTrace();
-			}
-			return "redirect:Faculty/search";
 		}
 
-		return operation;
+		try {
+			if (OP_SAVE.equalsIgnoreCase(operation)) {
+
+				FacultyDTO dto = (FacultyDTO) form.getDto();
+				UserDTO userDto = userService.findByPK(form.getUserId());
+				dto.setFacultyName(userDto.getFirstName() + " "
+						+ userDto.getLastName());
+				dto.setLogin(userDto.getLogin());
+				CollegeDTO collegeDto = collegeService.findByPK(form
+						.getCollegeId());
+				dto.setCollegeName(collegeDto.getName());
+				if (dto.getId() != 0) {
+					service.update(dto);
+					String msg = messageSource.getMessage("message.update",
+							null, locale);
+					model.addAttribute("success", msg);
+
+				} else {
+					service.add(dto);
+					String msg = messageSource.getMessage("message.success",
+							null, locale);
+					model.addAttribute("success", msg);
+
+				}
+			}
+		} catch (DuplicateRecordException e) {
+			String msg = messageSource
+					.getMessage("error.faculty", null, locale);
+			model.addAttribute("error", msg);
+			log.error(e);
+
+		}
+
+		return "Faculty";
 
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public String searchList(Locale locale,
-			@ModelAttribute("form") FacultyForm form, Model model)
-			throws ApplicationException {
-
+			@ModelAttribute("form") FacultyForm form, Model model) {
 		log.debug("FacultyCtl search method started");
 		FacultyDTO dto = (FacultyDTO) form.getDto();
+		int i = service.search(dto).size();
+		int size = 0;
+		if (i % 5 == 0) {
+
+			size = i / 5;
+		} else {
+			size = (i / 5) + 1;
+		}
+		model.addAttribute("size", size);
+
 		model.addAttribute("list",
 				service.search(dto, form.getPageNo(), form.getPageSize()));
-
 		return "FacultyList";
-
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public String searchList(@RequestParam(required = false) String operation,
 			@ModelAttribute("form") FacultyForm form,
-			BindingResult bindingResult, Locale locale)
-			throws ApplicationException {
-
+			@RequestParam(required = false) Integer pageNO,
+			BindingResult bindingResult, Locale locale, Model model) {
+		// Calculate next page number
 		int pageNo = form.getPageNo();
+		if (pageNO != null && pageNO > 0) {
+			pageNo = pageNO;
 
-		if (OP_NEXT.equalsIgnoreCase(operation)) {
-			pageNo++;
-		} else if (OP_PREVIOUS.equalsIgnoreCase(operation)) {
-			pageNo--;
+		}
+		if (OP_SEARCH.equals(operation)) {
+			pageNo = 1;
 		}
 		pageNo = (pageNo < 1) ? 1 : pageNo;
+
 		form.setPageNo(pageNo);
-
-		if (OP_DELETE.equalsIgnoreCase(operation) && form.getId() > 0) {
-			service.delete(form.getId());
+		try {
+			if (OP_DELETE.equals(operation)) {
+				pageNo = 1;
+				if (form.getIds() != null) {
+					for (long id : form.getIds()) {
+						service.delete(id);
+						String msg = messageSource.getMessage("message.delete",
+								null, locale);
+						model.addAttribute("success", msg);
+					}
+				} else {
+					String msg = messageSource.getMessage(
+							"message.delete.error", null, locale);
+					model.addAttribute("error", msg);
+				}
+			}
+		} catch (Exception e) {
+			return "Error";
 		}
-		FacultyDTO dto = (FacultyDTO) form.getDto();
-		service.search(dto, pageNo, form.getPageSize());
-		return "FacultyList";
 
+		// Get search attributes
+		FacultyDTO dto = (FacultyDTO) form.getDto();
+
+		model.addAttribute("list",
+				service.search(dto, pageNo, form.getPageSize()));
+
+		int i = service.search(dto).size();
+		int size = 0;
+		if (i % 5 == 0) {
+			size = i / 5;
+		} else {
+			size = (i / 5) + 1;
+		}
+		if (i == 0) {
+			String msg = messageSource.getMessage("error.notFound", null,
+					locale);
+			model.addAttribute("error", msg);
+		}
+		model.addAttribute("size", size);
+
+		return "FacultyList";
 	}
+
 }

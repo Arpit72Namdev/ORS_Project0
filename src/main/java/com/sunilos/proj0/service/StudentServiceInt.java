@@ -11,7 +11,7 @@ import com.sunilos.proj0.exception.DuplicateRecordException;
  * 
  * Student Service interface.
  * 
- * @author SunilOS
+ * @author Business Delegate
  * @version 1.0
  * @Copyright (c) SunilOS
  */
@@ -22,31 +22,26 @@ public interface StudentServiceInt {
 	 * Add a Student
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
 	 * @throws DuplicateRecordException
 	 *             : throws when Student already exists
 	 */
-	public long add(StudentDTO dto) throws ApplicationException,
-			DuplicateRecordException;
+	public long add(StudentDTO dto) throws DuplicateRecordException;
 
 	/**
 	 * Update a Student
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
 	 * @throws DuplicateRecordException
 	 *             : if updated user record is already exist
 	 */
-	public void update(StudentDTO dto) throws ApplicationException,
-			DuplicateRecordException;
+	public void update(StudentDTO dto) throws DuplicateRecordException;
 
 	/**
 	 * Delete a Student
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
 	 */
-	public void delete(long id) throws ApplicationException;
+	public void delete(long id);
 
 	/**
 	 * Find Student by EmailId
@@ -54,9 +49,8 @@ public interface StudentServiceInt {
 	 * @param name
 	 *            : get parameter
 	 * @return dto
-	 * @throws ApplicationException
 	 */
-	public StudentDTO findByEmailId(String emailId) throws ApplicationException;
+	public StudentDTO findByEmailId(String emailId);
 
 	/**
 	 * Find Student by PK
@@ -64,9 +58,8 @@ public interface StudentServiceInt {
 	 * @param pk
 	 *            : get parameter
 	 * @return dto
-	 * @throws ApplicationException
 	 */
-	public StudentDTO findByPK(long pk) throws ApplicationException;
+	public StudentDTO findByPK(long pk);
 
 	/**
 	 * Search Student with pagination
@@ -78,10 +71,8 @@ public interface StudentServiceInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
-	 * @throws ApplicationException
 	 */
-	public List search(StudentDTO dto, int pageNo, int pageSize)
-			throws ApplicationException;
+	public List search(StudentDTO dto, int pageNo, int pageSize);
 
 	/**
 	 * Search Student
@@ -89,17 +80,15 @@ public interface StudentServiceInt {
 	 * @return list : List of Student
 	 * @param dto
 	 *            : Search Parameters
-	 * @throws ApplicationException
 	 */
-	public List search(StudentDTO dto) throws ApplicationException;
+	public List search(StudentDTO dto);
 
 	/**
 	 * Gets List of College
 	 * 
 	 * @return list : List of College
-	 * @throws DatabaseException
 	 */
-	public List list() throws ApplicationException;
+	public List list();
 
 	/**
 	 * get List of College with pagination
@@ -109,8 +98,7 @@ public interface StudentServiceInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
-	 * @throws ApplicationException
 	 */
-	public List list(int pageNo, int pageSize) throws ApplicationException;
+	public List list(int pageNo, int pageSize);
 
 }

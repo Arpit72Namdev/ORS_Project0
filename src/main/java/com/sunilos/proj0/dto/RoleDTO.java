@@ -8,7 +8,7 @@ import javax.persistence.Table;
 /**
  * Role POJO class. It is persistent object.
  * 
- * @author SunilOS
+ * @author Business Delegate
  * @version 1.0
  * @Copyright (c) SunilOS
  */

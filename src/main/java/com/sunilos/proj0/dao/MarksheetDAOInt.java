@@ -10,7 +10,7 @@ import com.sunilos.proj0.exception.*;
 /**
  * Marksheet DAO interface.
  * 
- * @author SunilOS
+ * @author Business Delegate
  * @version 1.0
  * @Copyright (c) SunilOS
  */
@@ -21,9 +21,7 @@ public interface MarksheetDAOInt {
 	 * Adds a Marksheet
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
-	 * @throws DuplicateRecordException
-	 *             : throws when Roll No already exists
+	 * @throws DataAccessException
 	 * 
 	 */
 
@@ -33,7 +31,7 @@ public interface MarksheetDAOInt {
 	 * Deletes a Marksheet
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
+	 * @throws DataAccessException
 	 */
 	public void delete(long id) throws DataAccessException;
 
@@ -43,9 +41,9 @@ public interface MarksheetDAOInt {
 	 * @param rollNo
 	 *            : get parameter
 	 * @return dto
-	 * @throws ApplicationException
+	 * @throws DataAccessException
 	 */
-	public MarksheetDTO findByRollNo(String rollNo) throws ApplicationException;
+	public MarksheetDTO findByRollNo(String rollNo) throws DataAccessException;
 
 	/**
 	 * Finds Marksheet by PK
@@ -63,10 +61,9 @@ public interface MarksheetDAOInt {
 	 * 
 	 * @param dto
 	 * @throws DataAccessException
-	 * @throws DuplicateRecordException
 	 */
-	public void update(MarksheetDTO dto) throws DataAccessException,
-			DuplicateRecordException;
+	public void update(MarksheetDTO dto) throws DataAccessException;
+		
 
 	/**
 	 * Searches Marksheet
@@ -97,7 +94,7 @@ public interface MarksheetDAOInt {
 	 * Gets List of Marksheet
 	 * 
 	 * @return list : List of Marksheets
-	 * @throws DatabaseException
+	*DataAccessException
 	 */
 	public List list() throws DataAccessException;
 

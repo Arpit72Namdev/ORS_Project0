@@ -20,9 +20,9 @@ import com.sunilos.proj0.exception.DuplicateRecordException;
  * If unchecked exception is propagated from a method then transaction will be
  * rolled back.
  * 
- * Default propogation value is Propagation.REQUIRED and readOnly = false
+ * Default propagation value is Propagation.REQUIRED and readOnly = false
  * 
- * @author SunilOS
+ * @author Business Delegate
  * @version 1.0
  * @Copyright (c) SunilOS
  */
@@ -40,8 +40,7 @@ public class CollegeServiceSpringImpl implements CollegeServiceInt {
 			.getLogger(CollegeServiceSpringImpl.class);
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public long add(CollegeDTO dto) throws ApplicationException,
-			DuplicateRecordException {
+	public long add(CollegeDTO dto) throws DuplicateRecordException {
 		log.debug("College Service add started");
 		CollegeDTO existDto = dao.findByName(dto.getName());
 		if (existDto != null) {
@@ -52,18 +51,17 @@ public class CollegeServiceSpringImpl implements CollegeServiceInt {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void update(CollegeDTO dto) throws ApplicationException,
-			DuplicateRecordException {
+	public void update(CollegeDTO dto) throws DuplicateRecordException {
 		log.debug("College Service update started");
-		CollegeDTO existDto = dao.findByName(dto.getName());
+		/*CollegeDTO existDto = dao.findByName(dto.getName());
 		if (existDto != null && existDto.getId() != dto.getId()) {
 			throw new DuplicateRecordException("Record is alredy exist");
-		}
+		}*/
 		dao.update(dto);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void delete(long id) throws ApplicationException {
+	public void delete(long id) {
 		log.debug("College Service delete started");
 		dao.delete(id);
 		log.debug("College Service delete End");
@@ -71,38 +69,37 @@ public class CollegeServiceSpringImpl implements CollegeServiceInt {
 	}
 
 	@Transactional(readOnly = true)
-	public CollegeDTO findByName(String name) throws ApplicationException {
+	public CollegeDTO findByName(String name) {
 
 		return dao.findByName(name);
 	}
 
 	@Transactional(readOnly = true)
-	public CollegeDTO findByPK(long pk) throws ApplicationException {
+	public CollegeDTO findByPK(long pk) {
 
 		return dao.findByPK(pk);
 	}
 
 	@Transactional(readOnly = true)
-	public List search(CollegeDTO dto, int pageNo, int pageSize)
-			throws ApplicationException {
+	public List search(CollegeDTO dto, int pageNo, int pageSize) {
 
 		return dao.search(dto, pageNo, pageSize);
 	}
 
 	@Transactional(readOnly = true)
-	public List search(CollegeDTO dto) throws ApplicationException {
+	public List search(CollegeDTO dto) {
 
-		return search(dto);
+		return dao.search(dto);
 	}
 
 	@Transactional(readOnly = true)
-	public List list() throws ApplicationException {
+	public List list() {
 
 		return dao.list();
 	}
 
 	@Transactional(readOnly = true)
-	public List list(int pageNo, int pageSize) throws ApplicationException {
+	public List list(int pageNo, int pageSize) {
 
 		return dao.list(pageNo, pageSize);
 	}

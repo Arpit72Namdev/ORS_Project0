@@ -10,7 +10,7 @@ import com.sunilos.proj0.exception.*;
 /**
  * College DAO interface.
  * 
- * @author SunilOS
+ * @author Business Delegate
  * @version 1.0
  * @Copyright (c) SunilOS
  */
@@ -21,9 +21,7 @@ public interface CollegeDAOInt {
 	 * Add a College
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
-	 * @throws DuplicateRecordException
-	 *             : throws when college already exists
+	   * @throws DataAccessException
 	 */
 	public long add(CollegeDTO dto) throws DataAccessException;
 
@@ -31,9 +29,7 @@ public interface CollegeDAOInt {
 	 * Update a College
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
-	 * @throws DuplicateRecordException
-	 *             : if updated user record is already exist
+ * @throws DataAccessException
 	 */
 	public void update(CollegeDTO dto) throws DataAccessException;
 
@@ -41,8 +37,8 @@ public interface CollegeDAOInt {
 	 * Delete a College
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
-	 */
+	 * @throws DataAccessException
+		 */
 	public void delete(long id) throws DataAccessException;
 
 	/**
@@ -51,7 +47,7 @@ public interface CollegeDAOInt {
 	 * @param name
 	 *            : get parameter
 	 * @return dto
-	 * @throws ApplicationException
+	  * @throws DataAccessException
 	 */
 	public CollegeDTO findByName(String name) throws DataAccessException;
 
@@ -61,9 +57,9 @@ public interface CollegeDAOInt {
 	 * @param pk
 	 *            : get parameter
 	 * @return dto
-	 * @throws ApplicationException
+	 * @throws DataAccessException
 	 */
-	public CollegeDTO findByPK(long pk) throws ApplicationException;
+	public CollegeDTO findByPK(long pk) throws  DataAccessException;
 
 	/**
 	 * Search College with pagination
@@ -75,7 +71,7 @@ public interface CollegeDAOInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
-	 * @throws ApplicationException
+	 * @throws DataAccessException
 	 */
 	public List search(CollegeDTO dto, int pageNo, int pageSize)
 			throws DataAccessException;
@@ -86,7 +82,7 @@ public interface CollegeDAOInt {
 	 * @return list : List of College
 	 * @param dto
 	 *            : Search Parameters
-	 * @throws ApplicationException
+	  * @throws DataAccessException
 	 */
 	public List search(CollegeDTO dto) throws DataAccessException;
 
@@ -94,7 +90,7 @@ public interface CollegeDAOInt {
 	 * Gets List of College
 	 * 
 	 * @return list : List of College
-	 * @throws DatabaseException
+	 * @throws DataAccessException
 	 */
 	public List list() throws DataAccessException;
 
@@ -106,7 +102,7 @@ public interface CollegeDAOInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
-	 * @throws ApplicationException
+	 * @throws DataAccessException
 	 */
 	public List list(int pageNo, int pageSize) throws DataAccessException;
 

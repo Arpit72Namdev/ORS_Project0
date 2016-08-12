@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html;charset=UTF-8 "
 	pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 
@@ -10,23 +10,37 @@
 <title>Project0</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="../../css/bootstrap.min.css">
-<script type="text/javascript" src="../../css/js/jquery.min.js"></script>
-<script type="text/javascript" src="../../css/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../css/js/calendar.js"></script>
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/resources/css/bootstrap.min.css">
+<script type="text/javascript" src="/resources/css/js/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/css/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="/resources/css/js/calendar.js"></script>
+<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 
 
+<!-- <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script> -->
+
+<script>
+	function bigImg(x) {
+		x.style.height = "90px";
+		x.style.width = "90px";
+	}
+	function normalImg(x) {
+		x.style.height = "50px";
+		x.style.width = "50px";
+	}
+</script>
+
 <style type="text/css">
 .error {
-	color: green;
+	color: red;
 	font-weight: bold;
 }
 
@@ -36,30 +50,47 @@
 }
 
 a:HOVER {
-	color: green;
+	color: blue;
 }
 
 .nav>li>a:focus,.nav>li>a:hover {
 	background-color: white;
-	color: green;
+	color: red;
 }
 
 a {
 	color: white;
 }
+
+.map-responsive {
+	overflow: hidden;
+	padding-bottom: 56.25%;
+	position: relative;
+	height: 0;
+}
+
+.map-responsive iframe {
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+}
 </style>
-<title></title>
+
 </head>
+
 <body>
+
 	<table cellspacing="2" align="center" width="100%">
 		<tr>
 			<td valign="top" colspan="2" height="100px"><tiles:insertAttribute
 					name="header"></tiles:insertAttribute></td>
 		</tr>
 		<tr>
-			<td style="background-color: green;" width="20%" colspan="0"
-				height="400px" valign="top"><tiles:insertAttribute name="menu"></tiles:insertAttribute></td>
-			<td colspan="2" height="400px" valign="top"><tiles:insertAttribute
+			<td style="background-color: white;" width="20%" colspan="0"
+				height="300px" valign="top"><tiles:insertAttribute name="menu"></tiles:insertAttribute></td>
+			<td colspan="2" height="500px" valign="top"><tiles:insertAttribute
 					name="body"></tiles:insertAttribute></td>
 		</tr>
 		<tr>
@@ -68,6 +99,6 @@ a {
 		</tr>
 	</table>
 
-
 </body>
+
 </html>

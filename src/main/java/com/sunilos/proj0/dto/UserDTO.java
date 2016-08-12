@@ -10,14 +10,14 @@ import javax.persistence.Table;
 /**
  * User POJO class. It is persistent object.
  * 
- * @author SunilOS
+ * @author Business Delegate
  * @version 1.0
  * @Copyright (c) SunilOS
  */
 
 @Entity
 @Table(name = "ST_USER")
-public class UserDTO extends BaseDTO implements DropdownList {
+public class UserDTO extends BaseDTO {
 
 	/**
 	 * Lock Active constant for User
@@ -49,6 +49,7 @@ public class UserDTO extends BaseDTO implements DropdownList {
 	 */
 	@Column(name = "PASSWORD", length = 50)
 	private String password;
+
 	/**
 	 * Date of Birth of User
 	 */
@@ -63,7 +64,7 @@ public class UserDTO extends BaseDTO implements DropdownList {
 	 * Role of User
 	 */
 	@Column(name = "ROLE_ID")
-	private long roleId;
+	private Long roleId;
 
 	/**
 	 * Number of unsuccessful login attempt
@@ -148,11 +149,11 @@ public class UserDTO extends BaseDTO implements DropdownList {
 		this.mobileNo = mobileNo;
 	}
 
-	public long getRoleId() {
+	public Long getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(long roleId) {
+	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
 	}
 
@@ -204,12 +205,16 @@ public class UserDTO extends BaseDTO implements DropdownList {
 		this.lastLoginIP = lastLoginIP;
 	}
 
-	public static String getActive() {
-		return ACTIVE;
+	@Override
+	public String getKey() {
+		// TODO Auto-generated method stub
+		return String.valueOf(id);
 	}
 
-	public static String getInactive() {
-		return INACTIVE;
+	@Override
+	public String getValue() {
+		// TODO Auto-generated method stub
+		return firstName + " " + lastName + "-" + login;
 	}
 
 }

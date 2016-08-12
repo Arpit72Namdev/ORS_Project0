@@ -19,7 +19,7 @@ import com.sunilos.proj0.exception.*;
  * 
  * @version 1.0
  * @since 1 Jan 2015
- * @author Sunil Sahu
+ * @author Business Delegate
  * @Copyright (c) Sunil Sahu
  * @url www.sunilbooks.com
  */
@@ -30,9 +30,7 @@ public interface UserDAOInt {
 	 * 
 	 * @param dto
 	 * @throws DataAccessException
-	 * @throws DuplicateRecordException
-	 *             : throws when user already exists
-	 */
+		 */
 	public long add(UserDTO dto) throws DataAccessException;
 
 	/**
@@ -40,9 +38,7 @@ public interface UserDAOInt {
 	 * 
 	 * @param dto
 	 * @throws DataAccessException
-	 * @throws DuplicateRecordException
-	 *             : if updated user record is already exist
-	 */
+		 */
 	public void update(UserDTO dto) throws DataAccessException;
 
 	/**
@@ -60,7 +56,6 @@ public interface UserDAOInt {
 	 *            : get parameter
 	 * @return dto
 	 * @throws DataAccessException
-	 * @throws DuplicateRecordException
 	 */
 	public UserDTO findByLogin(String login) throws DataAccessException;
 
@@ -103,8 +98,8 @@ public interface UserDAOInt {
 	 * Get List of Users
 	 * 
 	 * @return list : List of Users
-	 * @throws DatabaseException
-	 */
+	 * @throws DataAccessException
+		 */
 	public List list() throws DataAccessException;
 
 	/**
@@ -139,9 +134,7 @@ public interface UserDAOInt {
 	 * @param login
 	 *            : User Login
 	 * @throws DataAccessException
-	 * @throws RecordNotFoundException
-	 *             : if user not found
-	 */
+		 */
 	public boolean lock(String login) throws DataAccessException;
 
 	/**

@@ -12,21 +12,19 @@ public interface MarksheetServiceInt {
 	/**
 	 * Marksheet Service interface.
 	 * 
-	 * @author SunilOS
+	 * @author Business Delegate
 	 * @version 1.0
 	 * @Copyright (c) SunilOS
 	 */
 
-	public long add(MarksheetDTO dto) throws ApplicationException,
-			DuplicateRecordException;
+	public long add(MarksheetDTO dto) throws DuplicateRecordException;
 
 	/**
 	 * Deletes a Marksheet
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
 	 */
-	public void delete(long id) throws ApplicationException;
+	public void delete(long id);
 
 	/**
 	 * Finds Marksheet by Roll No
@@ -34,9 +32,8 @@ public interface MarksheetServiceInt {
 	 * @param rollNo
 	 *            : get parameter
 	 * @return dto
-	 * @throws ApplicationException
 	 */
-	public MarksheetDTO findByRollNo(String rollNo) throws ApplicationException;
+	public MarksheetDTO findByRollNo(String rollNo);
 
 	/**
 	 * Finds Marksheet by PK
@@ -44,29 +41,25 @@ public interface MarksheetServiceInt {
 	 * @param pk
 	 *            : get parameter
 	 * @return dto
-	 * @throws ApplicationException
 	 */
 
-	public MarksheetDTO findByPK(long pk) throws ApplicationException;
+	public MarksheetDTO findByPK(long pk);
 
 	/**
 	 * Updates a Marksheet
 	 * 
 	 * @param dto
-	 * @throws ApplicationException
 	 * @throws DuplicateRecordException
 	 */
-	public void update(MarksheetDTO dto) throws ApplicationException,
-			DuplicateRecordException;
+	public void update(MarksheetDTO dto) throws DuplicateRecordException;
 
 	/**
 	 * Searches Marksheet
 	 * 
 	 * @param dto
 	 *            : Search Parameters
-	 * @throws ApplicationException
 	 */
-	public List search(MarksheetDTO dto) throws ApplicationException;
+	public List search(MarksheetDTO dto);
 
 	/**
 	 * Searches Marksheet with pagination
@@ -79,18 +72,15 @@ public interface MarksheetServiceInt {
 	 * @param pageSize
 	 *            : Size of Page
 	 * 
-	 * @throws ApplicationException
 	 */
-	public List search(MarksheetDTO dto, int pageNo, int pageSize)
-			throws ApplicationException;
+	public List search(MarksheetDTO dto, int pageNo, int pageSize);
 
 	/**
 	 * Gets List of Marksheet
 	 * 
 	 * @return list : List of Marksheets
-	 * @throws DatabaseException
 	 */
-	public List list() throws ApplicationException;
+	public List list();
 
 	/**
 	 * get List of Marksheet with pagination
@@ -100,9 +90,8 @@ public interface MarksheetServiceInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
-	 * @throws ApplicationException
 	 */
-	public List list(int pageNo, int pageSize) throws ApplicationException;
+	public List list(int pageNo, int pageSize);
 
 	/**
 	 * get Merit List of Marksheet with pagination
@@ -112,9 +101,7 @@ public interface MarksheetServiceInt {
 	 *            : Current Page No.
 	 * @param pageSize
 	 *            : Size of Page
-	 * @throws ApplicationException
 	 */
-	public List getMeritList(int pageNo, int pageSize)
-			throws ApplicationException;
+	public List getMeritList(int pageNo, int pageSize);
 
 }

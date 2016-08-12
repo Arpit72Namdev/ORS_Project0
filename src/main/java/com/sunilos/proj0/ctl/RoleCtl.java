@@ -1,14 +1,16 @@
 package com.sunilos.proj0.ctl;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
-import javax.management.relation.RoleList;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,10 +20,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sunilos.proj0.dto.RoleDTO;
-import com.sunilos.proj0.dto.UserDTO;
 import com.sunilos.proj0.exception.ApplicationException;
+import com.sunilos.proj0.exception.DuplicateRecordException;
 import com.sunilos.proj0.form.RoleForm;
 import com.sunilos.proj0.service.RoleServiceInt;
+
+/**
+ * Contains navigation logics for Role and Role List usecases.
+ * 
+ * @author Business Delegate
+ * @version 1.0
+ * @Copyright (c) SunilOS
+ */
 
 @Controller
 @RequestMapping(value = "/ctl/Role")
@@ -54,77 +64,134 @@ public class RoleCtl extends BaseCtl {
 			@RequestParam(required = false) String operation, Model model) {
 		log.debug("RoleCtl submit method started");
 
-		if (OP_CANCEL.equals(operation)) {
+		long id1 = form.getDto().getId();
+		if (OP_CANCEL.equals(operation) && (id1 != 0)) {
+			return "redirect:Role/search";
+		} else if (OP_CANCEL.equals(operation)) {
 			return "redirect:Role";
 		}
 		if (bindingResult.hasErrors()) {
 			return "Role";
 		}
+		if (bindingResult.hasErrors()) {
+			List list = bindingResult.getAllErrors();
+			Iterator it = list.iterator();
+			while (it.hasNext()) {
+				Object ob = it.next();
+			}
+			return "Student";
+		}
 
 		try {
-			if (OP_SAVE.equals(operation)) {
-				RoleDTO dto = (RoleDTO) form.getDto();
-				if (dto.getId() > 0) {
-					service.update(dto);
+			if (OP_SAVE.equalsIgnoreCase(operation)) {
 
-					model.addAttribute("success",
-							"Data is updated successfully");
+				RoleDTO dto = (RoleDTO) form.getDto();
+				if (dto.getId() != 0) {
+					service.update(dto);
+					String msg = messageSource.getMessage("message.update",
+							null, locale);
+					model.addAttribute("success", msg);
+
 				} else {
-					long id = service.add(dto);
-					form.setId(id);
+					service.add(dto);
 					String msg = messageSource.getMessage("message.success",
 							null, locale);
 					model.addAttribute("success", msg);
 
 				}
 			}
-		} catch (Exception e) {
-			model.addAttribute("error", "RoleId is already Exist" );
-			e.printStackTrace();
+		} catch (DuplicateRecordException e) {
+			String msg = messageSource.getMessage("error.roleId", null, locale);
+			model.addAttribute("error", msg);
+			log.error(e);
+
 		}
 
 		return "Role";
+
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public String searchList(@ModelAttribute("form") RoleForm form, Model model)
 			throws ApplicationException {
 		RoleDTO dto = (RoleDTO) form.getDto();
+		int i = service.search(dto).size();
+		int size = 0;
+		if (i % 5 == 0) {
+
+			size = i / 5;
+		} else {
+			size = (i / 5) + 1;
+		}
+		model.addAttribute("size", size);
+
 		model.addAttribute("list",
 				service.search(dto, form.getPageNo(), form.getPageSize()));
-
 		return "RoleList";
-
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public String searchList(Locale locale,
 			@ModelAttribute("form") RoleForm form, BindingResult bindingResult,
+			@RequestParam(required = false) Integer pageNO,
 			@RequestParam(required = false) String operation, Model model)
 			throws ApplicationException {
 		log.debug("RoleCtl list submit method started");
 
+		// Calculate next page number
 		int pageNo = form.getPageNo();
+		if (pageNO != null && pageNO > 0) {
+			pageNo = pageNO;
 
-		if (OP_NEXT.equals(operation)) {
-			pageNo++;
-		} else if (OP_PREVIOUS.equals(operation)) {
-			pageNo--;
+		}
+		if (OP_SEARCH.equals(operation)) {
+			pageNo = 1;
 		}
 		pageNo = (pageNo < 1) ? 1 : pageNo;
 
-		if (OP_DELETE.equals(operation) && form.getIds() != null) {
-			for (long id : form.getIds()) {
-				service.delete(id);
+		form.setPageNo(pageNo);
+		if (OP_DELETE.equals(operation)) {
+			pageNo = 1;
+			try {
+				if (form.getIds() != null) {
+					for (long id : form.getIds()) {
+						service.delete(id);
+						String msg = messageSource.getMessage("message.delete",
+								null, locale);
+						model.addAttribute("success", msg);
+					}
+				} else {
+					String msg = messageSource.getMessage(
+							"message.delete.error", null, locale);
+					model.addAttribute("error", msg);
+				}
+			} catch (Exception e) {
+				return "Error";
+
 			}
-			String msg = messageSource.getMessage("message.success", null,
-					locale);
-			model.addAttribute("success", msg);
 		}
+
+		// Get search attributes
 		RoleDTO dto = (RoleDTO) form.getDto();
+
 		model.addAttribute("list",
 				service.search(dto, pageNo, form.getPageSize()));
-		return "RoleList";
 
+		int i = service.search(dto).size();
+		int size = 0;
+		if (i % 5 == 0) {
+			size = i / 5;
+		} else {
+			size = (i / 5) + 1;
+		}
+		if (i == 0) {
+			String msg = messageSource.getMessage("error.notFound", null,
+					locale);
+			model.addAttribute("error", msg);
+		}
+		model.addAttribute("size", size);
+
+		return "RoleList";
 	}
+
 }

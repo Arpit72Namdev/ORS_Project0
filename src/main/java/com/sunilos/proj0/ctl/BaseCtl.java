@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
  * Base Controller class of project. It contain (1) Generic operations (2)
  * Generic constants (3) Generic work flow.
  * 
- * @author SunilOS
+ * @author Business Delegate
  * @version 1.0
  * @Copyright (c) SunilOS0
  */
@@ -26,7 +26,7 @@ public abstract class BaseCtl {
 	protected static final String OP_GO = "Go";
 	protected static final String OP_GET = "Get";
 	protected static final String OP_DELETE = "Delete";
-
+	public static final String OP_SEARCH = "Search";
 	/**
 	 * Loads preloaded data and stores in Model object.
 	 * 
@@ -34,6 +34,5 @@ public abstract class BaseCtl {
 	 */
 	@ModelAttribute
 	public void preload(Model model) {
-		System.out.println("This is preload method");
 	}
 }

@@ -4,7 +4,7 @@ package com.sunilos.proj0.dto;
  * DropdownList interface is implemented by DTOs those are used to create drop
  * down list on HTML pages
  * 
- * @author SunilOS
+ * @author Business Delegate
  * @version 1.0
  * @Copyright (c) SunilOS
  */

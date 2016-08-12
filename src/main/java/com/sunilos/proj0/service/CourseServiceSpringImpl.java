@@ -14,6 +14,20 @@ import com.sunilos.proj0.exception.ApplicationException;
 import com.sunilos.proj0.exception.DuplicateRecordException;
 import com.sunilos.proj0.exception.RecordNotFoundException;
 
+/**
+ * Session facade of Course Service. It is transactional, apply delcarative
+ * transactions with help of Spring AOP.
+ * 
+ * If unchecked exception is propagated from a method then transaction will be
+ * rolled back.
+ * 
+ * Default propagation value is Propagation.REQUIRED and readOnly = false
+ * 
+ * @author Business Delegate
+ * @version 1.0
+ * @Copyright (c) SunilOS
+ */
+
 @Service(value = "courseService")
 public class CourseServiceSpringImpl implements CourseServiceInt {
 
@@ -27,10 +41,8 @@ public class CourseServiceSpringImpl implements CourseServiceInt {
 	private static Logger log = Logger.getLogger(CourseServiceSpringImpl.class);
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public long add(CourseDTO dto) throws ApplicationException,
-			DuplicateRecordException {
-		CourseDTO duplicateCourse = dao.findByName(dto.getCourseName(),
-				dto.getSubject());
+	public long add(CourseDTO dto) throws DuplicateRecordException {
+		CourseDTO duplicateCourse = dao.findByName(dto.getCourseName());
 		if (duplicateCourse != null) {
 			throw new DuplicateRecordException("Course is already Exist");
 		}
@@ -39,56 +51,53 @@ public class CourseServiceSpringImpl implements CourseServiceInt {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void update(CourseDTO dto) throws ApplicationException,
-			DuplicateRecordException, RecordNotFoundException {
-		CourseDTO duplicateCourse = dao.findByName(dto.getCourseName(),
-				dto.getSubject());
-		if (duplicateCourse == null) {
-			throw new RecordNotFoundException("Course does not Exist");
-		}
+	public void update(CourseDTO dto) throws DuplicateRecordException {
+		/*
+		 * CourseDTO duplicateCourse = dao.findByName(dto.getCourseName(),
+		 * dto.getSubject()); if (duplicateCourse == null) { throw new
+		 * DuplicateRecordException("Course is already Exist"); }
+		 */
 		dao.update(dto);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void delete(long id) throws ApplicationException {
+	public void delete(long id) {
 		dao.delete(id);
 
 	}
 
 	@Transactional(readOnly = true)
-	public CourseDTO findByName(String name, String sub)
-			throws ApplicationException {
+	public CourseDTO findByName(String name, String sub) {
 
-		return dao.findByName(name, sub);
+		return dao.findByName(name);
 	}
 
 	@Transactional(readOnly = true)
-	public CourseDTO findByPK(long pk) throws ApplicationException {
+	public CourseDTO findByPK(long pk) {
 
-		return findByPK(pk);
+		return dao.findByPK(pk);
 	}
 
 	@Transactional(readOnly = true)
-	public List search(CourseDTO dto, int pageNo, int pageSize)
-			throws ApplicationException {
+	public List search(CourseDTO dto, int pageNo, int pageSize) {
 
 		return dao.search(dto, pageNo, pageSize);
 	}
 
 	@Transactional(readOnly = true)
-	public List search(CourseDTO dto) throws ApplicationException {
+	public List search(CourseDTO dto) {
 
 		return dao.search(dto);
 	}
 
 	@Transactional(readOnly = true)
-	public List list() throws ApplicationException {
+	public List list() {
 
 		return dao.list();
 	}
 
 	@Transactional(readOnly = true)
-	public List list(int pageNo, int pageSize) throws ApplicationException {
+	public List list(int pageNo, int pageSize) {
 
 		return dao.list(pageNo, pageSize);
 	}

@@ -7,7 +7,7 @@ import javax.persistence.Table;
 /**
  * Marksheet POJO class. It is persistent object.
  * 
- * @author SunilOS
+ * @author  Business Delegate
  * @version 1.0
  * @Copyright (c) SunilOS
  */
@@ -31,6 +31,7 @@ public class MarksheetDTO extends BaseDTO {
 
 	@Column(name = "STUDENT_ID")
 	protected Long studentId;
+
 
 	public String getRollNo() {
 		return rollNo;
